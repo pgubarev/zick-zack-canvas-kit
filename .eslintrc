@@ -1,0 +1,53 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "jest"
+  ],
+  "extends": [
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "jest/globals": true
+  },
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+
+    "no-console": "off",
+
+    // BuildOptions хотим брать из devDependencies
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": false, "peerDependencies": false}],
+
+    // Временно выключил потому что многие классы используют _ для разделения приватных и не приватных переменных.
+    "no-underscore-dangle": "off",
+
+    // Используется для того что бы можно было запускать твины без сохранения их в переменную,
+    // так что их не нужно будет отчищать вручную.
+    "no-void": "off",
+
+    // Сейчас в классах много атрибутов которые группируются для лучшего понимания их назначения,
+    // строгое разделение через пустую стоку только добавит лишних строк.
+    "@typescript-eslint/lines-between-class-members": "off",
+
+    "no-plusplus": ["error", {"allowForLoopAfterthoughts": true}],
+
+    // Временно выключил это правило, потому что много где править, но вообще да, можно и дефолтными
+    "import/prefer-default-export": "off"
+  }
+}

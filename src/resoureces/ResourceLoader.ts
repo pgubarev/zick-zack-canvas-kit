@@ -1,0 +1,44 @@
+import { IResource } from './interfaaces';
+import { ImageResource } from './ImageResource';
+import { JsonResource } from './JsonResource';
+import { TexturePackerAtlas } from './TexturePackerAtlas';
+
+type TResourceClass = new (url) => IResource;
+
+
+export class ResourceLoader {
+    private static resourceClassMap: Map<string, TResourceClass> = new Map();
+
+    public static registerResourceType(typeAlias: string, resourceClass: TResourceClass) {
+        ResourceLoader.resourceClassMap.set(typeAlias, resourceClass);
+    }
+
+    public resources: Map<string, IResource>;
+
+    constructor() {
+        this.resources = new Map();
+    }
+
+    add(typeAlias: string, url: string): void {
+        if (!ResourceLoader.resourceClassMap.has(typeAlias)) {
+            throw new Error('Unknown resource type');
+        }
+
+        const ResourceClass = ResourceLoader.resourceClassMap.get(typeAlias);
+        this.resources.set(url, new ResourceClass(url));
+    }
+
+    load() {
+        const promises = [];
+        this.resources.forEach((resource ) => {
+            const promise = resource.load();
+            promises.push(promise)
+        });
+
+        return Promise.all(promises);
+    }
+}
+
+ResourceLoader.registerResourceType('image', ImageResource);
+ResourceLoader.registerResourceType('json', JsonResource);
+ResourceLoader.registerResourceType('texturePack', TexturePackerAtlas);
