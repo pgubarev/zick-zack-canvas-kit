@@ -18,6 +18,9 @@ export type TConfig = {
   canvasWidth: number,
   canvasHeight: number,
 
+  usePixelated: boolean,
+  imageSmoothingQuality: 'disabled' | 'low' | 'medium' | 'high',
+
   scaleFactor: number,
 }
 
@@ -30,6 +33,8 @@ export function createApplicationConfig(options: TConfigOptions): TConfig {
   return {
     baseWidth: options.baseWidth,
     baseHeight: options.baseHeight,
+    imageSmoothingQuality: options.imageSmoothingQuality || 'medium',
+    usePixelated: options.usePixelated !== undefined ? options.usePixelated : true,
     canvasWidth,
     canvasHeight,
     scaleFactor,

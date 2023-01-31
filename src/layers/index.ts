@@ -1,7 +1,7 @@
-import { Layer } from './layer';
-import { TConfigOptions, createApplicationConfig } from "./configs";
+import { Layer } from './Layer';
+import {TConfigOptions, createApplicationConfig, TConfig} from "./configs";
 
-function createCanvasContext(canvas, options: TConfigOptions): CanvasRenderingContext2D {
+export function createCanvasContext(canvas, options: TConfig): CanvasRenderingContext2D {
   const ctx = canvas.getContext('2d');
 
   // Set up image smoothing
@@ -28,7 +28,11 @@ function createCanvasContext(canvas, options: TConfigOptions): CanvasRenderingCo
   return ctx;
 }
 
-export function createLayer(name: string, options: TConfigOptions) {
+export const LayersMap: Map<string, Layer> = new Map();
+
+export function createLayer(options: TConfigOptions, name = 'default') {
+  if (LayersMap.has(name)) throw new Error(`Layer with name ${name} already exists`);
+
   const config = createApplicationConfig(options);
 
   const canvas = <HTMLCanvasElement>document.createElement('canvas');
@@ -36,11 +40,13 @@ export function createLayer(name: string, options: TConfigOptions) {
   canvas.width = config.canvasWidth;
   canvas.height = config.canvasHeight;
 
-  if (options.usePixelated) canvas.style.imageRendering = 'pixelated';
+  if (config.usePixelated) canvas.style.imageRendering = 'pixelated';
 
-  const ctx = createCanvasContext(canvas, options);
+  const ctx = createCanvasContext(canvas, config);
 
   document.body.appendChild(canvas);
 
-  return new Layer(name, config, canvas, ctx);
+  const layer = new Layer(name, config, canvas, ctx);
+  LayersMap.set(name, layer);
+  return layer;
 }

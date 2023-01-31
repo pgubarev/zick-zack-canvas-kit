@@ -1,4 +1,5 @@
 import { TBoundRect } from 'common';
+import { createCanvasContext, LayersMap } from 'layers';
 import { DisplayObject } from './DisplayObject';
 
 export class ImageMask extends DisplayObject {
@@ -8,19 +9,21 @@ export class ImageMask extends DisplayObject {
 
     public sourceRect: TBoundRect;
 
-    constructor(image: HTMLImageElement, sourceRect: TBoundRect) {
+    constructor(image: HTMLImageElement, sourceRect: TBoundRect, layerName = 'default') {
         super();
 
         this.sourceRect = sourceRect;
         this.maskImage = image;
 
+        if (!LayersMap.has(layerName)) throw new Error(`Layer with name ${layerName} not found`);
+
+        const { config } = LayersMap.get(layerName);
+
         this.canvas = document.createElement('canvas');
         this.canvas.width = this.sourceRect.width;
         this.canvas.height = this.sourceRect.height;
 
-        this.ctx = this.canvas.getContext('2d');
-
-        document.body.appendChild(this.canvas);
+        this.ctx = createCanvasContext(this.canvas, config);
     }
 
     destroy() {
