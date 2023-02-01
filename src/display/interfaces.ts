@@ -1,5 +1,7 @@
+import { RenderFunction } from './types';
+
 export interface IDisplayable {
-  render(ctx: CanvasRenderingContext2D): void;
+  render(ctx: CanvasRenderingContext2D, tmpCtx: CanvasRenderingContext2D): void;
   destroy(): void;
 
   get x(): number;
@@ -15,6 +17,16 @@ export interface IDisplayable {
   get globalY(): number;
 
   updatePosition(): void;
+
+  parent: IDisplayable;
+}
+
+export interface IMask extends IDisplayable {
+  renderWithMask(
+      ctx: CanvasRenderingContext2D,
+      tmpCtx: CanvasRenderingContext2D,
+      originalRenderFunction: RenderFunction,
+  );
 }
 
 export interface IContainer extends IDisplayable {

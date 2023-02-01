@@ -45,6 +45,7 @@
     // строгое разделение через пустую стоку только добавит лишних строк.
     "@typescript-eslint/lines-between-class-members": "off",
 
+    "max-classes-per-file": "off",
     "no-plusplus": ["error", {"allowForLoopAfterthoughts": true}],
 
     // Временно выключил это правило, потому что много где править, но вообще да, можно и дефолтными

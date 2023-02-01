@@ -13,6 +13,8 @@ const layer = createLayer(
     },
 );
 
+document.body.appendChild(layer.canvas);
+
 const url = 'https://avatars.githubusercontent.com/u/46652265?s=400&u=3e1fb5dc99a97838c4644a81f6b6bc77e7745202&v=4';
 const atlasUrl = 'https://water-game-frontend.vercel.app/assets/themes/default.json';
 

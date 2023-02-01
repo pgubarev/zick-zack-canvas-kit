@@ -1,6 +1,5 @@
 import { DisplayObject } from './DisplayObject';
 import { IContainer } from './interfaces';
-import { ImageMask } from './ImageMask';
 
 
 export class Container extends DisplayObject implements IContainer {
@@ -13,24 +12,20 @@ export class Container extends DisplayObject implements IContainer {
         super.destroy();
     }
 
-    render(ctx: CanvasRenderingContext2D): void {
+    render(ctx: CanvasRenderingContext2D, tmpCtx: CanvasRenderingContext2D): void {
         if (this._mask === null) {
-            this.renderChildren(ctx);
+            this.renderChildren(ctx, tmpCtx);
             return;
         }
 
-        if (this._mask instanceof ImageMask) {
-            this._mask.renderWithMask(ctx, this.children);
-        }
-
-        // TODO: add support for clip mask
+        this._mask.renderWithMask(ctx, tmpCtx, this.renderChildren);
     }
 
-    private renderChildren(ctx: CanvasRenderingContext2D): void {
+    private renderChildren(ctx: CanvasRenderingContext2D, tmpCtx: CanvasRenderingContext2D): void {
         for (let i = 0; i < this.children.length; i++) {
             // TODO: it would be greate to add some logic to skip rendering
             //  for children outside container bounds
-            this.children[i].render(ctx);
+            this.children[i].render(ctx, tmpCtx);
         }
     }
 
