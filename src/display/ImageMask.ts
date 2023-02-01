@@ -1,4 +1,4 @@
-import { TBoundRect } from 'common';
+import { TBoundRect } from '../common';
 import {BaseDisplayObject} from './DisplayObject';
 import { IMask } from './interfaces';
 import { RenderFunction } from './types';

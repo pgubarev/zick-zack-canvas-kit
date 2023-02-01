@@ -1,4 +1,4 @@
-import { Container } from 'display';
+import { Container } from '../display';
 import { TConfig } from './configs';
 import { createCanvasContext } from './utils';
 

@@ -1,4 +1,4 @@
-import { rotateCanvas } from 'utils/canvas';
+import { rotateCanvas } from '../utils/canvas';
 import { DisplayObject } from './DisplayObject';
 import { IContainer } from './interfaces';
 

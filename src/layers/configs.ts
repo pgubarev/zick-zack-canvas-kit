@@ -1,4 +1,4 @@
-import { getDocumentHeight, getDocumentWidth } from 'utils/browser';
+import { getDocumentHeight, getDocumentWidth } from '../utils/browser';
 
 export type TConfigOptions = {
   baseWidth: number,

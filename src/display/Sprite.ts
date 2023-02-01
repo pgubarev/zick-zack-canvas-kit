@@ -1,4 +1,4 @@
-import { TBoundRect } from 'common';
+import { TBoundRect } from '../common';
 import { DisplayObject } from './DisplayObject';
 
 
