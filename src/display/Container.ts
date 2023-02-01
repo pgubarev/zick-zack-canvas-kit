@@ -1,6 +1,6 @@
+import { rotateCanvas } from 'utils/canvas';
 import { DisplayObject } from './DisplayObject';
 import { IContainer } from './interfaces';
-
 
 export class Container extends DisplayObject implements IContainer {
     children: DisplayObject[] = [];
@@ -22,11 +22,17 @@ export class Container extends DisplayObject implements IContainer {
     }
 
     private renderChildren(ctx: CanvasRenderingContext2D, tmpCtx: CanvasRenderingContext2D): void {
+        if (this.rotation !== 0)
+            rotateCanvas(ctx, this.rotation, this.anchorX, this.anchorY);
+
         for (let i = 0; i < this.children.length; i++) {
             // TODO: it would be greate to add some logic to skip rendering
             //  for children outside container bounds
             this.children[i].render(ctx, tmpCtx);
         }
+
+        if (this.rotation !== 0)
+            rotateCanvas(ctx, -this.rotation, this.anchorX, this.anchorY);
     }
 
     appendChild(child: DisplayObject): void {

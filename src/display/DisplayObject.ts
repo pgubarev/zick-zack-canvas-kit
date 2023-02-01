@@ -10,7 +10,11 @@ export abstract class BaseDisplayObject implements IDisplayable {
     protected _height = 0;
     protected _width = 0;
 
-    public parent: DisplayObject = null;
+    public rotation = 0;
+    protected _anchorX: number;
+    protected _anchorY: number;
+
+    public parent: IDisplayable = null;
 
     abstract render(ctx: CanvasRenderingContext2D, tmpCtx: CanvasRenderingContext2D)
 
@@ -50,6 +54,12 @@ export abstract class BaseDisplayObject implements IDisplayable {
         this._globalX = this.parent.globalX + this._x;
         this._globalY = this.parent.globalY + this._y;
     }
+
+    get anchorX(): number { return this._globalX + this._anchorX }
+    set anchorX(value: number) { this._anchorX = value }
+
+    get anchorY(): number { return this._globalY + this._anchorY }
+    set anchorY(value: number) { this._anchorY = value }
 }
 
 export abstract class DisplayObject extends BaseDisplayObject {

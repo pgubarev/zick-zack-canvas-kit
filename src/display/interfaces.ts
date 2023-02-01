@@ -19,6 +19,12 @@ export interface IDisplayable {
   updatePosition(): void;
 
   parent: IDisplayable;
+
+  get anchorX(): number;
+  set anchorX(value: number);
+
+  get anchorY(): number;
+  set anchorY(value: number);
 }
 
 export interface IMask extends IDisplayable {

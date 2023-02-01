@@ -1,5 +1,6 @@
 import { createLayer } from 'layers';
 import { ResourceLoader, TexturePackerAtlas } from 'resoureces';
+import { getRadians } from 'utils/math';
 import { Container, ImageMask, TilingSprite, Sprite } from './display';
 
 const layer = createLayer(
@@ -26,8 +27,8 @@ loader.load().then(() => {
     const atlas = <TexturePackerAtlas>loader.resources.get(atlasUrl);
 
     const container = new Container();
-    container.x = 0;
-    container.y = 100;
+    container.x = 150;
+    container.y = 150;
 
     const ts = atlas.getTextureSource('color_3.png');
 
@@ -58,11 +59,14 @@ loader.load().then(() => {
         container.appendChild(jarContainer);
         container.appendChild(jarSprite);
 
+        container.anchorX = 204 / 2;
+        container.anchorY = 318 / 2;
+        container.rotation = getRadians(45);
+
         layer.stage.appendChild(container);
 
         const animate = () => {
             layer.render();
-            container.x += 1;
             requestAnimationFrame(animate);
         }
 
