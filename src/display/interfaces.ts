@@ -1,3 +1,5 @@
+import { EventEmitter } from 'eventemitter3';
+
 import { RenderFunction } from './types';
 
 export interface IDisplayable {
@@ -40,4 +42,11 @@ export interface IContainer extends IDisplayable {
 
   appendChild(child: IDisplayable): void;
   removeChild(child: IDisplayable): void;
+}
+
+export interface IClickable {
+  containsPoint(clickX: number, clickY: number): boolean;
+  propagate(event: PointerEvent, type: string);
+
+  get emitter(): EventEmitter;
 }

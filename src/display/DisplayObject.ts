@@ -1,4 +1,6 @@
-import { IDisplayable, IMask } from './interfaces';
+import { EventEmitter } from 'eventemitter3';
+
+import { IClickable, IDisplayable, IMask } from './interfaces';
 
 export abstract class BaseDisplayObject implements IDisplayable {
     protected _x = 0;
@@ -62,11 +64,17 @@ export abstract class BaseDisplayObject implements IDisplayable {
     set anchorY(value: number) { this._anchorY = value }
 }
 
-export abstract class DisplayObject extends BaseDisplayObject {
+export abstract class DisplayObject extends BaseDisplayObject implements IClickable {
     protected _mask: IMask = null;
+    protected _emitter: EventEmitter;
 
     destroy() {
         super.destroy();
+
+        if (this._emitter !== null) {
+            this._emitter.removeAllListeners();
+            this._emitter = null;
+        }
 
         if (this._mask !== null) {
             this._mask.destroy();
@@ -93,9 +101,7 @@ export abstract class DisplayObject extends BaseDisplayObject {
         if (this._mask !== null) this._mask.updatePosition();
     }
 
-    get mask(): IMask {
-        return this._mask;
-    }
+    get mask(): IMask { return this._mask; }
     set mask(value: IMask) {
         if (this._mask !== null) {
             this._mask.parent = null;
@@ -109,5 +115,23 @@ export abstract class DisplayObject extends BaseDisplayObject {
         }
 
         this._mask = value;
+    }
+
+    get emitter(): EventEmitter {
+        // Try to implement on demand creation for Event emitter
+        if (this._emitter === null) this._emitter = new EventEmitter();
+        return this._emitter;
+    }
+
+    containsPoint(clickX: number, clickY: number): boolean {
+        return (
+            this._globalX <= clickX && this._globalX + this._width >= clickX &&
+            this._globalY <= clickY && this._globalY + this._height >= clickY
+        )
+    }
+
+    propagate(event: PointerEvent, type: string) {
+        if (this._emitter === null) return;
+        this._emitter.emit(type, event);
     }
 }
