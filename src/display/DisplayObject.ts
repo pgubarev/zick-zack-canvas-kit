@@ -62,18 +62,25 @@ export abstract class BaseDisplayObject implements IDisplayable {
 
     get anchorY(): number { return this._globalY + this._anchorY }
     set anchorY(value: number) { this._anchorY = value }
+
+    containsPoint(clickX: number, clickY: number): boolean {
+        return (
+            this._globalX <= clickX && this._globalX + this._width >= clickX &&
+            this._globalY <= clickY && this._globalY + this._height >= clickY
+        )
+    }
 }
 
 export abstract class DisplayObject extends BaseDisplayObject implements IClickable {
     protected _mask: IMask = null;
-    protected _emitter: EventEmitter;
+    protected _events: EventEmitter = null;
 
     destroy() {
         super.destroy();
 
-        if (this._emitter !== null) {
-            this._emitter.removeAllListeners();
-            this._emitter = null;
+        if (this._events !== null) {
+            this._events.removeAllListeners();
+            this._events = null;
         }
 
         if (this._mask !== null) {
@@ -117,21 +124,19 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
         this._mask = value;
     }
 
-    get emitter(): EventEmitter {
-        // Try to implement on demand creation for Event emitter
-        if (this._emitter === null) this._emitter = new EventEmitter();
-        return this._emitter;
+    containsPoint(clickX: number, clickY: number): boolean {
+        if (this._mask !== null) return this._mask.containsPoint(clickX, clickY);
+        return super.containsPoint(clickX, clickY);
     }
 
-    containsPoint(clickX: number, clickY: number): boolean {
-        return (
-            this._globalX <= clickX && this._globalX + this._width >= clickX &&
-            this._globalY <= clickY && this._globalY + this._height >= clickY
-        )
+    get events(): EventEmitter {
+        // Try to implement on demand creation for Event emitter
+        if (this._events === null) this._events = new EventEmitter();
+        return this._events;
     }
 
     propagate(event: PointerEvent, type: string) {
-        if (this._emitter === null) return;
-        this._emitter.emit(type, event);
+        if (this._events === null) return;
+        this._events.emit(type, event);
     }
 }

@@ -101,7 +101,7 @@ export class Container extends DisplayObject implements IContainer {
                 this.children[i].propagate(event, type);
         }
 
-        if (this._emitter === null) return;
-        this._emitter.emit(type, event);
+        if (this._events === null) return;
+        this._events.emit(type, event);
     }
 }

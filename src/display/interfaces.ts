@@ -19,6 +19,7 @@ export interface IDisplayable {
   get globalY(): number;
 
   updatePosition(): void;
+  containsPoint(clickX: number, clickY: number): boolean;
 
   parent: IDisplayable;
 
@@ -45,8 +46,7 @@ export interface IContainer extends IDisplayable {
 }
 
 export interface IClickable {
-  containsPoint(clickX: number, clickY: number): boolean;
   propagate(event: PointerEvent, type: string);
 
-  get emitter(): EventEmitter;
+  get events(): EventEmitter;
 }
