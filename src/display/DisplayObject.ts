@@ -1,6 +1,7 @@
 import { EventEmitter } from 'eventemitter3';
 
 import { IClickable, IDisplayable, IMask } from './interfaces';
+import {rotateCanvas} from "../utils/canvas";
 
 export abstract class BaseDisplayObject implements IDisplayable {
     protected _x = 0;
@@ -75,6 +76,8 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
     protected _mask: IMask = null;
     protected _events: EventEmitter = null;
 
+    protected _alpha: number;
+
     destroy() {
         super.destroy();
 
@@ -108,6 +111,9 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
         if (this._mask !== null) this._mask.updatePosition();
     }
 
+    get alpha(): number { return this._alpha }
+    set alpha(value: number) { this._alpha = value }
+
     get mask(): IMask { return this._mask; }
     set mask(value: IMask) {
         if (this._mask !== null) {
@@ -121,6 +127,19 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
         }
 
         this._mask = value;
+    }
+
+    beforeRender(ctx: CanvasRenderingContext2D) {
+        ctx.globalAlpha -= (1 - this._alpha);
+
+        if (this.rotation !== 0)
+            rotateCanvas(ctx, this.rotation, this.anchorX, this.anchorY);
+    };
+    afterRender(ctx: CanvasRenderingContext2D) {
+        ctx.globalAlpha += (1 - this._alpha);
+
+        if (this.rotation !== 0)
+            rotateCanvas(ctx, -this.rotation, this.anchorX, this.anchorY);
     }
 
     containsPoint(clickX: number, clickY: number): boolean {

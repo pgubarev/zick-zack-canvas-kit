@@ -14,8 +14,10 @@ export class TilingSprite extends DisplayObject {
     }
 
     render(ctx: CanvasRenderingContext2D) {
+        this.beforeRender(ctx);
         ctx.fillStyle = this.pattern;
         ctx.fillRect(this.globalX, this.globalY, this._width, this._height);
+        this.afterRender(ctx);
     }
 
     get width(): number { return this._width; }

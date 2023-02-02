@@ -23,8 +23,7 @@ export class Container extends DisplayObject implements IContainer {
     }
 
     private renderChildren(ctx: CanvasRenderingContext2D, tmpCtx: CanvasRenderingContext2D): void {
-        if (this.rotation !== 0)
-            rotateCanvas(ctx, this.rotation, this.anchorX, this.anchorY);
+        this.beforeRender(ctx);
 
         for (let i = 0; i < this.children.length; i++) {
             // TODO: it would be greate to add some logic to skip rendering
@@ -32,8 +31,7 @@ export class Container extends DisplayObject implements IContainer {
             this.children[i].render(ctx, tmpCtx);
         }
 
-        if (this.rotation !== 0)
-            rotateCanvas(ctx, -this.rotation, this.anchorX, this.anchorY);
+        this.afterRender(ctx);
     }
 
     appendChild(child: DisplayObject): void {

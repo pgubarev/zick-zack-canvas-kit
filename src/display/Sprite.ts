@@ -30,11 +30,13 @@ export class Sprite extends DisplayObject {
     }
 
     render(ctx: CanvasRenderingContext2D) {
+        this.beforeRender(ctx);
         ctx.drawImage(
             this.sourceImage,
             this.sourceX, this.sourceY, this.sourceWidth, this.sourceHeight,
             this.globalX, this.globalY, this._width, this._height,
         );
+        this.afterRender(ctx);
     }
 
     get width(): number { return this.sourceImage?.width || 0 }
