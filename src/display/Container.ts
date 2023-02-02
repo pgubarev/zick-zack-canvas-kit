@@ -6,6 +6,7 @@ export class Container extends DisplayObject implements IContainer {
     children: DisplayObject[] = [];
 
     destroy(): void {
+        super.destroy();
         this.children.forEach(child => child.destroy());
         this.children = null;
 
@@ -39,7 +40,6 @@ export class Container extends DisplayObject implements IContainer {
         this.children.push(child);
 
         // It's looks like bad practice, but link to parent have to be added here
-        // eslint-disable-next-line no-param-reassign
         child.parent = this;
         child.updatePosition();
         this.recalculateSize();
@@ -52,7 +52,6 @@ export class Container extends DisplayObject implements IContainer {
         this.children.splice(index, 1);
 
         // It's looks like bad practice, but link to parent have to be removed here
-        // eslint-disable-next-line no-param-reassign
         child.parent = null;
         this.recalculateSize();
     }

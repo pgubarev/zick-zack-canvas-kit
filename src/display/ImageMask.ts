@@ -23,7 +23,6 @@ export class ImageMask extends BaseDisplayObject implements IMask {
     }
 
     private prepareMask(tmpCtx: CanvasRenderingContext2D) {
-        // eslint-disable-next-line no-param-reassign
         tmpCtx.globalCompositeOperation = 'source-over';
         tmpCtx.setTransform(1, 0, 0, 1, 0, 0);
 
@@ -35,7 +34,6 @@ export class ImageMask extends BaseDisplayObject implements IMask {
         );
 
         tmpCtx.translate(-this.parent.globalX, -this.parent.globalY);
-        // eslint-disable-next-line no-param-reassign
         tmpCtx.globalCompositeOperation = 'source-in';
     }
 
@@ -55,7 +53,6 @@ export class ImageMask extends BaseDisplayObject implements IMask {
 
     render(ctx: CanvasRenderingContext2D, tmpCtx: CanvasRenderingContext2D) {
         tmpCtx.setTransform(1, 0, 0, 1, 0, 0);
-        // eslint-disable-next-line no-param-reassign
         tmpCtx.globalCompositeOperation = 'source-over';
 
         ctx.drawImage(

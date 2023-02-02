@@ -47,10 +47,8 @@ export class TexturePackerAtlas implements IResource {
         Object.values(this.config.frames).forEach(
             textureConfig => {
                 // @ts-ignore
-                // eslint-disable-next-line no-param-reassign
                 textureConfig.frame.width = textureConfig.frame.w;
                 // @ts-ignore
-                // eslint-disable-next-line no-param-reassign
                 textureConfig.frame.height = textureConfig.frame.h;
             }
         );

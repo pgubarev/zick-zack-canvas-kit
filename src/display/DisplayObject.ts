@@ -116,7 +116,6 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
 
         if (value !== null) {
             // It's looks like bad practice, but link to parent have to be added here
-            // eslint-disable-next-line no-param-reassign
             value.parent = this;
             value.updatePosition();
         }
