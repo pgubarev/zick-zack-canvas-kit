@@ -1,4 +1,4 @@
-import {TConfig} from './configs';
+import { TConfig } from './configs';
 
 export function createCanvasContext(config: TConfig): CanvasRenderingContext2D {
   const canvas = <HTMLCanvasElement>document.createElement('canvas');
@@ -31,4 +31,13 @@ export function createCanvasContext(config: TConfig): CanvasRenderingContext2D {
   }
 
   return ctx;
+}
+
+let temporaryCanvas: HTMLCanvasElement = null;
+
+export function getTemporaryCanvas(): HTMLCanvasElement {
+  if (temporaryCanvas === null)
+    temporaryCanvas = <HTMLCanvasElement>document.createElement('canvas');
+
+  return temporaryCanvas;
 }

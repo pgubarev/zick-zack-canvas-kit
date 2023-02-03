@@ -19,7 +19,7 @@ export abstract class BaseDisplayObject implements IDisplayable {
 
     public parent: IDisplayable = null;
 
-    abstract render(ctx: CanvasRenderingContext2D, tmpCtx: CanvasRenderingContext2D)
+    abstract render(ctx: CanvasRenderingContext2D)
 
     destroy() {
         this.parent = null;

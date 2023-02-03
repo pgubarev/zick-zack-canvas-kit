@@ -1,4 +1,5 @@
 import { DisplayObject } from './DisplayObject';
+import { getTemporaryCanvas } from '../layers/utils';
 
 type TextStyle = {
     font: string;
@@ -8,19 +9,20 @@ type TextStyle = {
 
 export class Text extends DisplayObject {
     private _text: string;
-    private needRecalculateWidth: boolean;
     public style: TextStyle;
+
+    private tmpContext: CanvasRenderingContext2D = null;
 
     constructor(text: string, style: TextStyle) {
         super();
         this._text = text;
         this.style = style;
-        this.needRecalculateWidth = true;
     }
 
     destroy() {
         super.destroy();
         this.style = null;
+        this.tmpContext = null;
     }
 
     render(ctx: CanvasRenderingContext2D) {
@@ -28,12 +30,6 @@ export class Text extends DisplayObject {
         ctx.font = `${this.style.size}px ${this.style.font}`;
         ctx.fillStyle = this.style.color;
         ctx.fillText(this._text, this.globalX, this.globalY);
-
-        if (this.needRecalculateWidth) {
-            this._width = ctx.measureText(this._text).width;
-            this.needRecalculateWidth = false;
-        }
-
         this.afterRender(ctx);
     }
 
@@ -41,4 +37,10 @@ export class Text extends DisplayObject {
     set text(value: string) { this._text = value; }
 
     get height(): number { return this.style.size; }
+    get width(): number {
+        if (this.tmpContext === null)
+            this.tmpContext = getTemporaryCanvas().getContext('2d');
+
+        return this.tmpContext.measureText(this._text).width;
+    }
 }
