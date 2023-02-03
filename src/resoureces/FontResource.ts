@@ -22,6 +22,7 @@ export class FontResource implements IResource {
         const fontFace = new FontFace(this.fontFamily, `url(${this.url})`);
         await fontFace.load();
         this.data = fontFace;
+        document.fonts.add(fontFace);
     }
 
     get isLoaded() { return this.data !== null }
