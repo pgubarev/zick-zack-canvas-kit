@@ -41,6 +41,7 @@ export class Text extends DisplayObject {
         if (this.tmpContext === null)
             this.tmpContext = getTemporaryCanvas().getContext('2d');
 
+        this.tmpContext.font = `${this.style.size}px ${this.style.font}`;
         return this.tmpContext.measureText(this._text).width;
     }
 }
