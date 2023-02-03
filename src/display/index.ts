@@ -1,3 +1,4 @@
+export { BasicGraphic } from './BasicGraphic';
 export { Container } from './Container';
 export { DisplayObject } from './DisplayObject';
 export { ImageMask } from './ImageMask';
