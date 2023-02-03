@@ -1,7 +1,7 @@
 import { DisplayObject } from '../display';
 import { BaseLayout } from './BaseLayout';
 
-export class UIHorizontalLayout extends BaseLayout {
+export class HorizontalLayout extends BaseLayout {
   appendChild(elem: DisplayObject) {
     elem.y = 0;
     if (this.children.length > 0) {

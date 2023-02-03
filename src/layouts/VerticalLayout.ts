@@ -1,7 +1,7 @@
 import { DisplayObject } from '../display';
 import { BaseLayout } from './BaseLayout';
 
-export class UIVerticalLayout extends BaseLayout {
+export class VerticalLayout extends BaseLayout {
   appendChild(elem: DisplayObject) {
     elem.x = 0;
     if (this.children.length > 0) {
