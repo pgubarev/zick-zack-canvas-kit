@@ -39,9 +39,9 @@ export class Sprite extends DisplayObject {
         this.afterRender(ctx);
     }
 
-    get width(): number { return this.sourceImage?.width || 0 }
+    get width(): number { return this._width }
     set width(value: number) { this._width = value }
 
-    get height(): number { return this.sourceImage?.height || 0 }
+    get height(): number { return this._height }
     set height(value: number) { this._height = value }
 }
