@@ -9,9 +9,6 @@ export class Layer {
   public canvas: HTMLCanvasElement;
   public ctx: CanvasRenderingContext2D;
 
-  public tmpCanvas: HTMLCanvasElement;
-  public tmpCtx: CanvasRenderingContext2D;
-
   public stage: Container;
 
   private eventsEnabled = false;
@@ -23,9 +20,6 @@ export class Layer {
     this.ctx = createCanvasContext(config);
     this.canvas = this.ctx.canvas;
 
-    this.tmpCtx = createCanvasContext(config);
-    this.tmpCanvas = this.ctx.canvas;
-
     this.stage = new Container();
 
     this.handlePointerDown = this.handlePointerDown.bind(this);
@@ -35,7 +29,7 @@ export class Layer {
 
   render() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.stage.render(this.ctx, this.tmpCtx);
+    this.stage.render(this.ctx);
   }
 
   private handlePointerDown(event: PointerEvent) { this.stage.propagate(event, 'pointerdown'); }
