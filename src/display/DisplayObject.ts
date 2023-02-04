@@ -13,7 +13,7 @@ export abstract class BaseDisplayObject implements IDisplayable {
     protected _height = 0;
     protected _width = 0;
 
-    public rotation = 0;
+    protected _rotation = 0;
     protected _anchorX: number;
     protected _anchorY: number;
 
@@ -63,6 +63,9 @@ export abstract class BaseDisplayObject implements IDisplayable {
 
     get anchorY(): number { return this._globalY + this._anchorY }
     set anchorY(value: number) { this._anchorY = value }
+
+    get rotation(): number { return this._rotation }
+    set rotation(value: number) { this._rotation = value }
 
     containsPoint(clickX: number, clickY: number): boolean {
         return (
@@ -132,14 +135,14 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
     beforeRender(ctx: CanvasRenderingContext2D) {
         ctx.globalAlpha -= (1 - this._alpha);
 
-        if (this.rotation !== 0)
-            rotateCanvas(ctx, this.rotation, this.anchorX, this.anchorY);
+        if (this._rotation !== 0)
+            rotateCanvas(ctx, this._rotation, this.anchorX, this.anchorY);
     };
     afterRender(ctx: CanvasRenderingContext2D) {
         ctx.globalAlpha += (1 - this._alpha);
 
-        if (this.rotation !== 0)
-            rotateCanvas(ctx, -this.rotation, this.anchorX, this.anchorY);
+        if (this._rotation !== 0)
+            rotateCanvas(ctx, -this._rotation, this.anchorX, this.anchorY);
     }
 
     containsPoint(clickX: number, clickY: number): boolean {
