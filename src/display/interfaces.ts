@@ -28,6 +28,9 @@ export interface IDisplayable {
 
   get anchorY(): number;
   set anchorY(value: number);
+
+  get rotation(): number;
+  set rotation(value: number);
 }
 
 export interface IMask extends IDisplayable {
