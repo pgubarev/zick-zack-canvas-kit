@@ -1,5 +1,5 @@
 import { Layer } from './Layer';
-import {TConfigOptions, createApplicationConfig } from './configs';
+import { TConfigOptions, createApplicationConfig } from './configs';
 
 export const LayersMap: Map<string, Layer> = new Map();
 

@@ -36,8 +36,7 @@ export function createCanvasContext(config: TConfig): CanvasRenderingContext2D {
 let temporaryCanvas: HTMLCanvasElement = null;
 
 export function getTemporaryCanvas(): HTMLCanvasElement {
-  if (temporaryCanvas === null)
-    temporaryCanvas = <HTMLCanvasElement>document.createElement('canvas');
+  if (temporaryCanvas === null) temporaryCanvas = <HTMLCanvasElement>document.createElement('canvas');
 
   return temporaryCanvas;
 }

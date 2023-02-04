@@ -17,7 +17,9 @@ export abstract class BaseLayout extends Container {
     this._viewportWidth = vWidth;
   }
 
-  get gap() { return this._gap; }
+  get gap() {
+    return this._gap;
+  }
   set gap(value) {
     if (this._gap !== value) {
       this._gap = value;

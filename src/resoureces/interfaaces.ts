@@ -1,8 +1,8 @@
 export interface IResource {
-    data: any;
+  data: any;
 
-    get isLoaded(): boolean;
+  get isLoaded(): boolean;
 
-    load(): Promise<void>;
-    destroy();
+  load(): Promise<void>;
+  destroy();
 }

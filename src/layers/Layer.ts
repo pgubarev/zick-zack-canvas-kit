@@ -32,9 +32,15 @@ export class Layer {
     this.stage.render(this.ctx);
   }
 
-  private handlePointerDown(event: PointerEvent) { this.stage.propagate(event, 'pointerdown'); }
-  private handlePointerUp(event: PointerEvent) { this.stage.propagate(event, 'pointerup'); }
-  private handlePointerMove(event: PointerEvent) { this.stage.propagate(event, 'pointermove'); }
+  private handlePointerDown(event: PointerEvent) {
+    this.stage.propagate(event, 'pointerdown');
+  }
+  private handlePointerUp(event: PointerEvent) {
+    this.stage.propagate(event, 'pointerup');
+  }
+  private handlePointerMove(event: PointerEvent) {
+    this.stage.propagate(event, 'pointermove');
+  }
 
   enableCanvasEvents() {
     if (this.eventsEnabled) return;
