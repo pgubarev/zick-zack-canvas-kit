@@ -79,11 +79,11 @@ export class ImageMask extends BaseDisplayObject implements IMask {
   }
 
   set width(value: number) {
-    this._width = value;
+    this._width = value | 0;
     this.tmpCanvas.width = Math.max(this.tmpCanvas.width, this._width);
   }
   set height(value: number) {
-    this._height = value;
+    this._height = value | 0;
     this.tmpCanvas.height = Math.max(this.tmpCanvas.height, this._height);
   }
 }

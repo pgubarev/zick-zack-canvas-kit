@@ -92,8 +92,8 @@ export class Container extends DisplayObject implements IContainer {
     }
 
     for (let i = 0; i < this.children.length; i++) {
-      this._width = Math.max(this.children[i].x + this.children[i].width, this._width);
-      this._height = Math.max(this.children[i].y + this.children[i].height, this._height);
+      this._width = Math.max(this.children[i].x + this.children[i].width, this._width) | 0;
+      this._height = Math.max(this.children[i].y + this.children[i].height, this._height) | 0;
     }
   }
 

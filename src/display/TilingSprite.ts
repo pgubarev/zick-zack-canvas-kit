@@ -24,13 +24,13 @@ export class TilingSprite extends DisplayObject {
     return this._width;
   }
   set width(value: number) {
-    this._width = value;
+    this._width = value | 0;
   }
 
   get height(): number {
     return this._height;
   }
   set height(value: number) {
-    this._height = value;
+    this._height = value | 0;
   }
 }

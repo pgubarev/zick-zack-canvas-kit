@@ -47,6 +47,7 @@
 
     "no-param-reassign": "off",
     "max-classes-per-file": "off",
+    "no-bitwise": "off",
     "no-plusplus": ["error", {"allowForLoopAfterthoughts": true}],
 
     // Временно выключил это правило, потому что много где править, но вообще да, можно и дефолтными

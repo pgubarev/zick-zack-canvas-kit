@@ -36,26 +36,16 @@ export abstract class BaseDisplayObject implements IDisplayable {
     return this._x;
   }
   set x(value: number) {
-    if (this.parent === null) {
-      this._x = value;
-      this._globalX = value;
-    } else {
-      this._globalX = this.parent.globalX + value;
-      this._x = value;
-    }
+    this._x = value | 0;
+    this._globalX = this.parent === null ? this._x : this.parent.globalX + this._x;
   }
 
   get y(): number {
     return this._y;
   }
   set y(value: number) {
-    if (this.parent === null) {
-      this._y = value;
-      this._globalY = value;
-    } else {
-      this._globalY = this.parent.globalY + value;
-      this._y = value;
-    }
+    this._y = value | 0;
+    this._globalY = this.parent === null ? this._y : this.parent.globalY + this._y;
   }
 
   get globalX(): number {
@@ -74,14 +64,14 @@ export abstract class BaseDisplayObject implements IDisplayable {
     return this._anchorX;
   }
   set anchorX(value: number) {
-    this._anchorX = value;
+    this._anchorX = value | 0;
   }
 
   get anchorY(): number {
     return this._anchorY;
   }
   set anchorY(value: number) {
-    this._anchorY = value;
+    this._anchorY = value | 0;
   }
 
   get rotation(): number {
