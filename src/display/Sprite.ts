@@ -36,8 +36,8 @@ export class Sprite extends DisplayObject {
       this.sourceY,
       this.sourceWidth,
       this.sourceHeight,
-      this.globalX,
-      this.globalY,
+      this._x,
+      this._y,
       this._width,
       this._height,
     );

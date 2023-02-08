@@ -29,7 +29,7 @@ export class Text extends DisplayObject {
     this.beforeRender(ctx);
     ctx.font = `${this.style.size}px ${this.style.font}`;
     ctx.fillStyle = this.style.color;
-    ctx.fillText(this._text, this.globalX, this.globalY);
+    ctx.fillText(this._text, this._x, this._y);
     this.afterRender(ctx);
   }
 

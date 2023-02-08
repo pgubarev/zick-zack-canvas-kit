@@ -16,7 +16,7 @@ export class TilingSprite extends DisplayObject {
   render(ctx: CanvasRenderingContext2D) {
     this.beforeRender(ctx);
     ctx.fillStyle = this.pattern;
-    ctx.fillRect(this.globalX, this.globalY, this._width, this._height);
+    ctx.fillRect(this._x, this._y, this._width, this._height);
     this.afterRender(ctx);
   }
 

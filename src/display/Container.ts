@@ -12,25 +12,35 @@ export class Container extends DisplayObject implements IContainer {
     super.destroy();
   }
 
+  beforeRender(ctx:CanvasRenderingContext2D) {
+    ctx.translate(this._x, this._y);
+    super.beforeRender(ctx);
+  }
+
+  afterRender(ctx:CanvasRenderingContext2D) {
+    super.afterRender(ctx);
+    ctx.translate(-this._x, -this._y);
+  }
+
   render(ctx: CanvasRenderingContext2D): void {
+    this.beforeRender(ctx);
+
     if (this._mask === null) {
       this.renderChildren(ctx);
+      this.afterRender(ctx);
       return;
     }
 
     this._mask.renderWithMask(ctx, this.renderChildren);
+    this.afterRender(ctx);
   }
 
   private renderChildren(ctx: CanvasRenderingContext2D): void {
-    this.beforeRender(ctx);
-
     for (let i = 0; i < this.children.length; i++) {
       // TODO: it would be greate to add some logic to skip rendering
       //  for children outside container bounds
       this.children[i].render(ctx);
     }
-
-    this.afterRender(ctx);
   }
 
   appendChild(child: DisplayObject): void {

@@ -71,14 +71,14 @@ export abstract class BaseDisplayObject implements IDisplayable {
   }
 
   get anchorX(): number {
-    return this._globalX + this._anchorX;
+    return this._anchorX;
   }
   set anchorX(value: number) {
     this._anchorX = value;
   }
 
   get anchorY(): number {
-    return this._globalY + this._anchorY;
+    return this._anchorY;
   }
   set anchorY(value: number) {
     this._anchorY = value;
