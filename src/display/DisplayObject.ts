@@ -14,8 +14,8 @@ export abstract class BaseDisplayObject implements IDisplayable {
   protected _width = 0;
 
   protected _rotation = 0;
-  protected _anchorX: number;
-  protected _anchorY: number;
+  protected _anchorX = 0;
+  protected _anchorY = 0;
 
   public parent: IDisplayable = null;
 
