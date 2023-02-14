@@ -9,6 +9,7 @@ type TTextureConfig = {
 
 type TTexturePackerAtlasConfig = {
   frames: { [key: string]: TTextureConfig };
+  animations: { [key: string]: string[] };
 };
 
 export class TexturePackerAtlas implements IResource {
