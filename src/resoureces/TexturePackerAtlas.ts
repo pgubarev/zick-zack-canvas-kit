@@ -16,7 +16,7 @@ export class TexturePackerAtlas implements IResource {
   public atlasUrl: string;
 
   public data: HTMLImageElement = null;
-  private config: TTexturePackerAtlasConfig = null;
+  public config: TTexturePackerAtlasConfig = null;
 
   constructor(url: string, atlasUrl: string = undefined) {
     this.url = url;
