@@ -13,7 +13,10 @@ export interface IDisplayable {
   set y(value: number);
 
   get width(): number;
+  set width(value: number);
+
   get height(): number;
+  set height(value: number);
 
   get globalX(): number;
   get globalY(): number;

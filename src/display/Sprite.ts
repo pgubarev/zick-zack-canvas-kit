@@ -1,15 +1,16 @@
 import { TBoundRect } from '../common';
 import { DisplayObject } from './DisplayObject';
+import { RasterCanvasImageSource } from './types';
 
 export class Sprite extends DisplayObject {
-  protected sourceImage: HTMLImageElement;
+  protected sourceImage: RasterCanvasImageSource;
 
   public sourceX: number;
   public sourceY: number;
   public sourceWidth: number;
   public sourceHeight: number;
 
-  constructor(sourceImage: HTMLImageElement, sourceRect?: TBoundRect) {
+  constructor(sourceImage: RasterCanvasImageSource, sourceRect?: TBoundRect) {
     super();
     this.sourceImage = sourceImage;
 
@@ -42,19 +43,5 @@ export class Sprite extends DisplayObject {
       this._height,
     );
     this.afterRender(ctx);
-  }
-
-  get width(): number {
-    return this._width;
-  }
-  set width(value: number) {
-    this._width = value | 0;
-  }
-
-  get height(): number {
-    return this._height;
-  }
-  set height(value: number) {
-    this._height = value | 0;
   }
 }

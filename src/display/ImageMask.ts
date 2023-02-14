@@ -1,26 +1,33 @@
 import { TBoundRect } from '../common';
 import { BaseDisplayObject } from './DisplayObject';
 import { IMask } from './interfaces';
-import { RenderFunction } from './types';
+import { RasterCanvasImageSource, RenderFunction } from './types';
 import { getTemporaryCanvas } from '../layers/utils';
 import { applyContextSettings } from '../utils/canvas';
 
 export class ImageMask extends BaseDisplayObject implements IMask {
-  public maskImage: HTMLImageElement;
-
-  public sourceRect: TBoundRect;
+  public maskImage: RasterCanvasImageSource;
 
   private tmpCanvas: HTMLCanvasElement;
   private tmpCtx: CanvasRenderingContext2D;
 
-  constructor(image: HTMLImageElement, sourceRect: TBoundRect) {
+  public sourceX: number;
+  public sourceY: number;
+  public sourceWidth: number;
+  public sourceHeight: number;
+
+  constructor(image: RasterCanvasImageSource, sourceRect?: TBoundRect) {
     super();
 
-    this.sourceRect = sourceRect;
     this.maskImage = image;
 
-    this._width = this.sourceRect.width;
-    this._height = this.sourceRect.height;
+    this.sourceX = sourceRect?.x || 0;
+    this.sourceY = sourceRect?.y || 0;
+    this.sourceWidth = sourceRect?.width || image.width;
+    this.sourceHeight = sourceRect?.height || image.height;
+
+    this._width = this.sourceWidth;
+    this._height = this.sourceHeight;
 
     this.tmpCanvas = getTemporaryCanvas();
     this.tmpCanvas.width = Math.max(this.tmpCanvas.width, this._width);
@@ -33,8 +40,6 @@ export class ImageMask extends BaseDisplayObject implements IMask {
     super.destroy();
 
     this.maskImage = null;
-    this.sourceRect = null;
-
     this.tmpCtx = null;
   }
 
@@ -54,10 +59,10 @@ export class ImageMask extends BaseDisplayObject implements IMask {
     this.tmpCtx.globalCompositeOperation = 'destination-in';
     this.tmpCtx.drawImage(
       this.maskImage,
-      this.sourceRect.x,
-      this.sourceRect.y,
-      this.sourceRect.width,
-      this.sourceRect.height,
+      this.sourceX,
+      this.sourceY,
+      this.sourceWidth,
+      this.sourceHeight,
       0,
       0,
       this._width,

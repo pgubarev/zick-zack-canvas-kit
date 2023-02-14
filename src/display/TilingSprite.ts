@@ -19,18 +19,4 @@ export class TilingSprite extends DisplayObject {
     ctx.fillRect(this._x, this._y, this._width, this._height);
     this.afterRender(ctx);
   }
-
-  get width(): number {
-    return this._width;
-  }
-  set width(value: number) {
-    this._width = value | 0;
-  }
-
-  get height(): number {
-    return this._height;
-  }
-  set height(value: number) {
-    this._height = value | 0;
-  }
 }

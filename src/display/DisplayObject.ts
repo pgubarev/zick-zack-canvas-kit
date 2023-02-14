@@ -28,8 +28,14 @@ export abstract class BaseDisplayObject implements IDisplayable {
   get height(): number {
     return this._height;
   }
+  set height(value: number) {
+    this._height = value | 0;
+  }
   get width(): number {
     return this._width;
+  }
+  set width(value: number) {
+    this._width = value | 0;
   }
 
   get x(): number {
