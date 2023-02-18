@@ -106,8 +106,11 @@ export class Container extends DisplayObject implements IContainer {
   }
 
   propagate(event: PointerEvent, type: string) {
-    for (let i = 0; i < this.children.length; i++) {
-      if (this.children[i].containsPoint(event.clientX, event.clientY)) this.children[i].propagate(event, type);
+    for (let i = this.children.length - 1; i >= 0 && !event.defaultPrevented; i--) {
+      if (this.children[i].containsPoint(event.clientX, event.clientY)) {
+        this.children[i].propagate(event, type);
+        break;
+      }
     }
 
     if (this._events === null) return;
