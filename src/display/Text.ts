@@ -1,7 +1,7 @@
 import { DisplayObject } from './DisplayObject';
 import { getTemporaryCanvas } from '../layers/utils';
 
-type TextStyle = {
+export type TextStyle = {
   font: string;
   size: number;
   color: string;
