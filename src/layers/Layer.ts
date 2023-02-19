@@ -1,5 +1,5 @@
-import { Container } from '../display';
-import { TConfig } from './configs';
+import { Container } from 'display';
+import { TConfig } from './types';
 import { createCanvasContext } from './utils';
 
 export class Layer {

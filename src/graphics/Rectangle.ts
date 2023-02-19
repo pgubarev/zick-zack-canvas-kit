@@ -1,4 +1,4 @@
-import { BasicGraphic } from '../display';
+import { BasicGraphic } from 'display';
 
 export class Rectangle extends BasicGraphic {
     public fillStyle: string | CanvasGradient | CanvasPattern = null;

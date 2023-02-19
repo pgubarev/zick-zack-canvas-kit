@@ -1,7 +1,7 @@
-import { IResource } from './interfaaces';
-import { ImageResource } from './ImageResource';
-import { JsonResource } from './JsonResource';
 import { FontResource } from './FontResource';
+import { ImageResource } from './ImageResource';
+import { IResource } from './interfaces';
+import { JsonResource } from './JsonResource';
 import { TexturePackerAtlas } from './TexturePackerAtlas';
 
 type TResourceClass = new (url, ...params: any[]) => IResource;

@@ -1,9 +1,10 @@
-import { TBoundRect } from '../common';
+import { TBoundRect } from 'common';
+import { applyContextSettings } from 'utils';
+import { getTemporaryCanvas } from 'layers/utils';
+
 import { BaseDisplayObject } from './DisplayObject';
 import { IMask } from './interfaces';
 import { RasterCanvasImageSource, RenderFunction } from './types';
-import { getTemporaryCanvas } from '../layers/utils';
-import { applyContextSettings } from '../utils/canvas';
 
 export class ImageMask extends BaseDisplayObject implements IMask {
   public maskImage: RasterCanvasImageSource;

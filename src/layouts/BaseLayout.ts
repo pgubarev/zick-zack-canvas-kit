@@ -1,4 +1,4 @@
-import { Container, DisplayObject } from '../display';
+import { Container, DisplayObject } from 'display';
 
 export abstract class BaseLayout extends Container {
   protected _viewportHeight = 0;

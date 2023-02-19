@@ -1,4 +1,5 @@
-import { DisplayObject } from '../display';
+import { DisplayObject } from 'display';
+
 import { BaseLayout } from './BaseLayout';
 
 export class HorizontalLayout extends BaseLayout {

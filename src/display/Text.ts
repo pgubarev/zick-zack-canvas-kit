@@ -1,5 +1,5 @@
+import { getTemporaryCanvas } from 'layers/utils';
 import { DisplayObject } from './DisplayObject';
-import { getTemporaryCanvas } from '../layers/utils';
 
 export type TextStyle = {
   font: string;

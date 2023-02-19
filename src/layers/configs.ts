@@ -1,29 +1,7 @@
-import { getDocumentHeight, getDocumentWidth } from '../utils/browser';
+import { getDocumentHeight, getDocumentWidth } from 'utils';
+import { TConfigOptions, TConfig } from './types';
 
-export type TConfigOptions = {
-  baseWidth: number;
-  baseHeight: number;
-
-  canvasWidth?: number;
-  canvasHeight?: number;
-
-  imageSmoothingQuality?: 'disabled' | 'low' | 'medium' | 'high';
-  usePixelated?: boolean;
-};
-
-export type TConfig = {
-  baseWidth: number;
-  baseHeight: number;
-
-  canvasWidth: number;
-  canvasHeight: number;
-
-  usePixelated: boolean;
-  imageSmoothingQuality: 'disabled' | 'low' | 'medium' | 'high';
-
-  scaleFactor: number;
-};
-
+// TODO: createLayerConfig
 export function createApplicationConfig(options: TConfigOptions): TConfig {
   const canvasWidth = options.canvasWidth || getDocumentWidth();
   const canvasHeight = options.canvasHeight || getDocumentHeight();

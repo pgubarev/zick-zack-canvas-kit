@@ -1,6 +1,6 @@
-export { ImageResource } from './ImageResource';
-export { JsonResource } from './JsonResource';
 export { FontResource } from './FontResource';
-export { TexturePackerAtlas } from './TexturePackerAtlas';
-
+export { ImageResource } from './ImageResource';
+export * from './interfaces';
+export { JsonResource } from './JsonResource';
 export { ResourceLoader } from './ResourceLoader';
+export { TexturePackerAtlas } from './TexturePackerAtlas';

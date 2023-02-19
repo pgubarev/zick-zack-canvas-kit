@@ -1,5 +1,6 @@
-import { TBoundRect } from '../common';
-import { IResource } from './interfaaces';
+import { TBoundRect } from 'common';
+
+import { IResource } from './interfaces';
 import { ImageResource } from './ImageResource';
 import { JsonResource } from './JsonResource';
 

@@ -1,9 +1,10 @@
 import { Layer } from './Layer';
-import { TConfigOptions, createApplicationConfig } from './configs';
+import { createApplicationConfig } from './configs';
+import { TConfigOptions } from './types';
 
 export const LayersMap: Map<string, Layer> = new Map();
 
-export function createLayer(options: TConfigOptions, name = 'default') {
+export function createLayer(options: TConfigOptions, name = 'default'): Layer {
   if (LayersMap.has(name)) throw new Error(`Layer with name ${name} already exists`);
 
   const config = createApplicationConfig(options);
