@@ -12,12 +12,12 @@ export class Container extends DisplayObject implements IContainer {
     super.destroy();
   }
 
-  beforeRender(ctx:CanvasRenderingContext2D) {
+  beforeRender(ctx: CanvasRenderingContext2D) {
     ctx.translate(this._x, this._y);
     super.beforeRender(ctx);
   }
 
-  afterRender(ctx:CanvasRenderingContext2D) {
+  afterRender(ctx: CanvasRenderingContext2D) {
     super.afterRender(ctx);
     ctx.translate(-this._x, -this._y);
   }

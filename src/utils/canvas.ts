@@ -15,3 +15,29 @@ export function applyContextSettings(fromContext: CanvasRenderingContext2D, toCo
 
   toContext.imageSmoothingQuality = fromContext.imageSmoothingQuality;
 }
+
+export function setSmoothlingSetting(
+  ctx: CanvasRenderingContext2D,
+  imageSmoothingQuality?: ImageSmoothingQuality | 'disabled',
+) {
+  // Set up image smoothing
+  if (imageSmoothingQuality === undefined || imageSmoothingQuality === 'disabled') {
+    // @ts-ignore
+    ctx.mozImageSmoothingEnabled = false;
+    // @ts-ignore
+    ctx.webkitImageSmoothingEnabled = false;
+    // @ts-ignore
+    ctx.msImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
+  } else {
+    // @ts-ignore
+    ctx.mozImageSmoothingEnabled = true;
+    // @ts-ignore
+    ctx.webkitImageSmoothingEnabled = true;
+    // @ts-ignore
+    ctx.msImageSmoothingEnabled = true;
+    ctx.imageSmoothingEnabled = true;
+
+    ctx.imageSmoothingQuality = imageSmoothingQuality;
+  }
+}

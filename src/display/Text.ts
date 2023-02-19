@@ -1,5 +1,5 @@
 import { DisplayObject } from './DisplayObject';
-import { getTemporaryCanvas } from '../layers/utils';
+import { getTemporaryCanvasContext } from '../layers/utils';
 
 export type TextStyle = {
   font: string;
@@ -9,27 +9,30 @@ export type TextStyle = {
 
 export class Text extends DisplayObject {
   private _text: string;
-  public style: TextStyle;
 
-  private tmpContext: CanvasRenderingContext2D = null;
+  private metrix: TextMetrics;
+  private drawingOffset: number;
+
+  public style: TextStyle;
 
   constructor(text: string, style: TextStyle) {
     super();
     this._text = text;
     this.style = style;
+
+    this.recalculateSize();
   }
 
   destroy() {
     super.destroy();
     this.style = null;
-    this.tmpContext = null;
   }
 
   render(ctx: CanvasRenderingContext2D) {
     this.beforeRender(ctx);
     ctx.font = `${this.style.size}px ${this.style.font}`;
     ctx.fillStyle = this.style.color;
-    ctx.fillText(this._text, this._x, this._y);
+    ctx.fillText(this._text, this._x, this._y + this.drawingOffset);
     this.afterRender(ctx);
   }
 
@@ -38,15 +41,22 @@ export class Text extends DisplayObject {
   }
   set text(value: string) {
     this._text = value;
+    this.recalculateSize();
   }
 
   get height(): number {
     return this.style.size;
   }
-  get width(): number {
-    if (this.tmpContext === null) this.tmpContext = getTemporaryCanvas().getContext('2d');
 
-    this.tmpContext.font = `${this.style.size}px ${this.style.font}`;
-    return this.tmpContext.measureText(this._text).width;
+  recalculateSize() {
+    const tmpContext = getTemporaryCanvasContext();
+    tmpContext.font = `${this.style.size}px ${this.style.font}`;
+
+    this.metrix = tmpContext.measureText(this._text);
+    this._width = this.metrix.width;
+    this._height = this.metrix.actualBoundingBoxAscent + this.metrix.actualBoundingBoxDescent;
+
+    this.drawingOffset =
+      this.metrix.actualBoundingBoxAscent + (this.metrix.fontBoundingBoxDescent - this.metrix.actualBoundingBoxDescent);
   }
 }

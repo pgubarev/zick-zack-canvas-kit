@@ -2,7 +2,7 @@ import { TBoundRect } from '../common';
 import { BaseDisplayObject } from './DisplayObject';
 import { IMask } from './interfaces';
 import { RasterCanvasImageSource, RenderFunction } from './types';
-import { getTemporaryCanvas } from '../layers/utils';
+import { getTemporaryCanvasContext } from '../layers/utils';
 import { applyContextSettings } from '../utils/canvas';
 
 export class ImageMask extends BaseDisplayObject implements IMask {
@@ -29,11 +29,11 @@ export class ImageMask extends BaseDisplayObject implements IMask {
     this._width = this.sourceWidth;
     this._height = this.sourceHeight;
 
-    this.tmpCanvas = getTemporaryCanvas();
+    this.tmpCtx = getTemporaryCanvasContext();
+
+    this.tmpCanvas = this.tmpCtx.canvas;
     this.tmpCanvas.width = Math.max(this.tmpCanvas.width, this._width);
     this.tmpCanvas.height = Math.max(this.tmpCanvas.height, this._height);
-
-    this.tmpCtx = this.tmpCanvas.getContext('2d');
   }
 
   destroy() {
@@ -70,17 +70,7 @@ export class ImageMask extends BaseDisplayObject implements IMask {
     );
 
     this.tmpCtx.globalCompositeOperation = 'source-over';
-    ctx.drawImage(
-      this.tmpCtx.canvas,
-      0,
-      0,
-      this._width,
-      this._height,
-      this._x,
-      this._y,
-      this._width,
-      this._height,
-    );
+    ctx.drawImage(this.tmpCtx.canvas, 0, 0, this._width, this._height, this._x, this._y, this._width, this._height);
   }
 
   set width(value: number) {
