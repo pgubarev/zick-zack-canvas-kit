@@ -11,8 +11,6 @@ export class Text extends DisplayObject {
   private _text: string;
 
   private metrix: TextMetrics;
-  private drawingOffset: number;
-
   public style: TextStyle;
 
   constructor(text: string, style: TextStyle) {
@@ -32,7 +30,7 @@ export class Text extends DisplayObject {
     this.beforeRender(ctx);
     ctx.font = `${this.style.size}px ${this.style.font}`;
     ctx.fillStyle = this.style.color;
-    ctx.fillText(this._text, this._x, this._y + this.drawingOffset);
+    ctx.fillText(this._text, this._x, this._y + this._height);
     this.afterRender(ctx);
   }
 
@@ -44,19 +42,12 @@ export class Text extends DisplayObject {
     this.recalculateSize();
   }
 
-  get height(): number {
-    return this.style.size;
-  }
-
   recalculateSize() {
     const tmpContext = getTemporaryCanvasContext();
     tmpContext.font = `${this.style.size}px ${this.style.font}`;
 
     this.metrix = tmpContext.measureText(this._text);
     this._width = this.metrix.width;
-    this._height = this.metrix.actualBoundingBoxAscent + this.metrix.actualBoundingBoxDescent;
-
-    this.drawingOffset =
-      this.metrix.actualBoundingBoxAscent + (this.metrix.fontBoundingBoxDescent - this.metrix.actualBoundingBoxDescent);
+    this._height = this.metrix.fontBoundingBoxAscent - this.metrix.fontBoundingBoxDescent;
   }
 }
