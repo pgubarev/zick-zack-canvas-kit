@@ -1,11 +1,7 @@
-import { DisplayObject } from './DisplayObject';
-import { getTemporaryCanvasContext } from '../layers/utils';
+import { DisplayObject } from '../DisplayObject';
+import { getTemporaryCanvasContext } from '../../layers/utils';
+import { TextStyle } from './types';
 
-export type TextStyle = {
-  font: string;
-  size: number;
-  color: string;
-};
 
 export class Text extends DisplayObject {
   private _text: string;
@@ -29,8 +25,18 @@ export class Text extends DisplayObject {
   render(ctx: CanvasRenderingContext2D) {
     this.beforeRender(ctx);
     ctx.font = `${this.style.size}px ${this.style.font}`;
-    ctx.fillStyle = this.style.color;
-    ctx.fillText(this._text, this._x, this._y + this._height);
+
+    if (this.style.fillStyle) {
+      ctx.fillStyle = this.style.fillStyle;
+      ctx.fillText(this._text, this._x, this._y + this._height);
+    }
+
+    if (this.style.strokeStyle) {
+      if (this.style.strokeLineWidth) ctx.lineWidth = this.style.strokeLineWidth;
+      ctx.strokeStyle = this.style.strokeStyle;
+      ctx.strokeText(this._text, this._x, this._y + this._height);
+    }
+
     this.afterRender(ctx);
   }
 
