@@ -13,8 +13,10 @@ export class VerticalCentredLayout extends VerticalLayout {
       elem.x = 0;
     }
 
+    const needUpdatePositions = elem.width > this._width;
+
     super.appendChild(elem);
-    if (elem.width > this._width) this.updateHorizontalPositions();
+    if (needUpdatePositions) this.updateHorizontalPositions();
   }
 
   updateHorizontalPositions() {

@@ -13,8 +13,10 @@ export class HorizontalCentredLayout extends HorizontalLayout {
       elem.x = 0;
     }
 
+    const needUpdatePositions = elem.height > this._height;
+
     super.appendChild(elem);
-    if (elem.height > this._height) this.updateVerticalPositions();
+    if (needUpdatePositions) this.updateVerticalPositions();
   }
 
   updateVerticalPositions() {
