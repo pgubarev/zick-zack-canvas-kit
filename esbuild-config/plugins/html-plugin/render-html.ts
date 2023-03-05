@@ -15,7 +15,7 @@ export const renderHtml = async (buildResult: BuildResult): Promise<string> => {
 
   // eslint-disable-next-line no-useless-catch
   try {
-    let template = (await readFile(path.resolve(__dirname, '..', '..', '..', 'src', 'index.html'), {
+    let template = (await readFile(path.resolve(__dirname, '..', '..', '..', 'demo-stand', 'index.html'), {
       encoding: 'utf8',
     })) as string;
 

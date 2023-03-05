@@ -1,4 +1,9 @@
-type TImageSmoothingQuality = 'disabled' | 'low' | 'medium' | 'high';
+export type TImageSmoothingQuality = ImageSmoothingQuality | 'disabled';
+
+export type TGlobalConfig = {
+  usePixelated: boolean;
+  imageSmoothingQuality: TImageSmoothingQuality;
+}
 
 // TODO: TLayerConfigOptions
 export type TConfigOptions = {
@@ -7,10 +12,7 @@ export type TConfigOptions = {
 
   canvasWidth?: number;
   canvasHeight?: number;
-
-  usePixelated?: boolean;
-  imageSmoothingQuality?: TImageSmoothingQuality;
-};
+} & TGlobalConfig;
 
 // TODO: TLayerConfig
 export type TConfig = {
@@ -19,9 +21,4 @@ export type TConfig = {
 
   canvasWidth: number;
   canvasHeight: number;
-
-  usePixelated: boolean;
-  imageSmoothingQuality: TImageSmoothingQuality;
-
-  scaleFactor: number;
-};
+} & TGlobalConfig;

@@ -1,27 +1,5 @@
 import { getDocumentHeight, getDocumentWidth } from 'utils';
-
-type TGlobalConfig = {
-  usePixelated: boolean;
-  imageSmoothingQuality: ImageSmoothingQuality | 'disabled';
-}
-
-export type TConfigOptions = {
-  baseWidth: number;
-  baseHeight: number;
-
-  canvasWidth?: number;
-  canvasHeight?: number;
-} & TGlobalConfig;
-import { getDocumentHeight, getDocumentWidth } from 'utils';
-import { TConfigOptions, TConfig } from './types';
-
-export type TConfig = {
-  baseWidth: number;
-  baseHeight: number;
-
-  canvasWidth: number;
-  canvasHeight: number;
-} & TGlobalConfig;
+import { TConfigOptions, TConfig, TGlobalConfig } from './types';
 
 export const CONFIG: TGlobalConfig = {
   usePixelated: false,
@@ -29,8 +7,6 @@ export const CONFIG: TGlobalConfig = {
 };
 
 export function createLayerConfig(options: TConfigOptions): TConfig {
-// TODO: createLayerConfig
-export function createApplicationConfig(options: TConfigOptions): TConfig {
   const canvasWidth = options.canvasWidth || getDocumentWidth();
   const canvasHeight = options.canvasHeight || getDocumentHeight();
 
