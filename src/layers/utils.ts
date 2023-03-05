@@ -1,3 +1,5 @@
+import { setSmoothlingSetting } from 'utils';
+import { CONFIG } from './configs';
 import { TConfig } from './types';
 
 export function createCanvasContext(config: TConfig): CanvasRenderingContext2D {
@@ -10,35 +12,28 @@ export function createCanvasContext(config: TConfig): CanvasRenderingContext2D {
   }
 
   const ctx = canvas.getContext('2d');
-
-  // Set up image smoothing
-  if (config.imageSmoothingQuality === undefined || config.imageSmoothingQuality === 'disabled') {
-    // @ts-ignore
-    ctx.mozImageSmoothingEnabled = false;
-    // @ts-ignore
-    ctx.webkitImageSmoothingEnabled = false;
-    // @ts-ignore
-    ctx.msImageSmoothingEnabled = false;
-    ctx.imageSmoothingEnabled = false;
-  } else {
-    // @ts-ignore
-    ctx.mozImageSmoothingEnabled = true;
-    // @ts-ignore
-    ctx.webkitImageSmoothingEnabled = true;
-    // @ts-ignore
-    ctx.msImageSmoothingEnabled = true;
-    ctx.imageSmoothingEnabled = true;
-
-    ctx.imageSmoothingQuality = config.imageSmoothingQuality;
-  }
+  setSmoothlingSetting(ctx);
 
   return ctx;
 }
 
 let temporaryCanvas: HTMLCanvasElement = null;
+let temporaryCanvasContext: CanvasRenderingContext2D = null;
+
+function setUpTemporaryCanvas() {
+  temporaryCanvas = <HTMLCanvasElement>document.createElement('canvas');
+  if (CONFIG.usePixelated) temporaryCanvas.style.imageRendering = 'pixelated';
+
+  temporaryCanvasContext = temporaryCanvas.getContext('2d');
+  setSmoothlingSetting(temporaryCanvasContext);
+}
 
 export function getTemporaryCanvas(): HTMLCanvasElement {
-  if (temporaryCanvas === null) temporaryCanvas = <HTMLCanvasElement>document.createElement('canvas');
-
+  if (temporaryCanvas === null) setUpTemporaryCanvas();
   return temporaryCanvas;
+}
+
+export function getTemporaryCanvasContext(): CanvasRenderingContext2D {
+  if (temporaryCanvas === null) setUpTemporaryCanvas();
+  return temporaryCanvasContext;
 }

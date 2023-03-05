@@ -4,6 +4,6 @@ export { DisplayObject } from './DisplayObject';
 export { ImageMask } from './ImageMask';
 export * from './interfaces';
 export { Sprite } from './Sprite';
-export { Text } from './Text';
+export { MultilineText, Text } from './text';
 export { TilingSprite } from './TilingSprite';
 export * from './types';
