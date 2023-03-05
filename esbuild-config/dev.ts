@@ -10,7 +10,7 @@ liveServer.start({
   root: 'build',
   open: false,
   ignore: 'node_modules',
-  file: 'index.html',
+  file: '../demo-stand/index.html',
   wait: 1000,
 });
 

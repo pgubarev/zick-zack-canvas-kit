@@ -1,25 +1,5 @@
-import { getDocumentHeight, getDocumentWidth } from '../utils/browser';
-
-type TGlobalConfig = {
-  usePixelated: boolean;
-  imageSmoothingQuality: ImageSmoothingQuality | 'disabled';
-}
-
-export type TConfigOptions = {
-  baseWidth: number;
-  baseHeight: number;
-
-  canvasWidth?: number;
-  canvasHeight?: number;
-} & TGlobalConfig;
-
-export type TConfig = {
-  baseWidth: number;
-  baseHeight: number;
-
-  canvasWidth: number;
-  canvasHeight: number;
-} & TGlobalConfig;
+import { getDocumentHeight, getDocumentWidth } from 'utils';
+import { TConfigOptions, TConfig, TGlobalConfig } from './types';
 
 export const CONFIG: TGlobalConfig = {
   usePixelated: false,

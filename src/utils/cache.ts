@@ -1,5 +1,5 @@
-import { IDisplayable } from '../display/interfaces';
-import { getTemporaryCanvas } from '../layers/utils';
+import { IDisplayable } from 'display/interfaces';
+import { getTemporaryCanvas } from 'layers/utils';
 
 export async function createBitmapDataFrom(displayObject: IDisplayable): Promise<ImageBitmap> {
   const tmpCanvas = getTemporaryCanvas();

@@ -1,12 +1,15 @@
-import { CONFIG, TConfig } from './configs';
-import { setSmoothlingSetting } from '../utils/canvas';
+import { setSmoothlingSetting } from 'utils';
+import { CONFIG } from './configs';
+import { TConfig } from './types';
 
 export function createCanvasContext(config: TConfig): CanvasRenderingContext2D {
   const canvas = <HTMLCanvasElement>document.createElement('canvas');
   canvas.width = config.canvasWidth;
   canvas.height = config.canvasHeight;
 
-  if (config.usePixelated) canvas.style.imageRendering = 'pixelated';
+  if (config.usePixelated) {
+    canvas.style.imageRendering = 'pixelated';
+  }
 
   const ctx = canvas.getContext('2d');
   setSmoothlingSetting(ctx);

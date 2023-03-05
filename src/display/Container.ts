@@ -25,7 +25,7 @@ export class Container extends DisplayObject implements IContainer {
   render(ctx: CanvasRenderingContext2D): void {
     this.beforeRender(ctx);
 
-    if (this._mask === null) {
+    if (!this._mask) {
       this.renderChildren(ctx);
       this.afterRender(ctx);
       return;
@@ -37,8 +37,7 @@ export class Container extends DisplayObject implements IContainer {
 
   private renderChildren(ctx: CanvasRenderingContext2D): void {
     for (let i = 0; i < this.children.length; i++) {
-      // TODO: it would be greate to add some logic to skip rendering
-      //  for children outside container bounds
+      // TODO: it would be great to add some logic to skip rendering for children outside container bounds
       this.children[i].render(ctx);
     }
   }
@@ -113,7 +112,7 @@ export class Container extends DisplayObject implements IContainer {
       }
     }
 
-    if (this._events === null) return;
+    if (!this._events) return;
     this._events.emit(type, event);
   }
 }

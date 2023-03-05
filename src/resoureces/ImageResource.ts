@@ -1,4 +1,4 @@
-import { IResource } from './interfaaces';
+import { IResource } from './interfaces';
 
 export class ImageResource implements IResource {
   public url: string;

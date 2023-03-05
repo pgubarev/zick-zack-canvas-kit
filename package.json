@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Lightweight library for HTML5 canvas applications",
   "main": "src/index.js",
-  "author": "p.gubarev.developer@gmail.com",
+  "author": "p.gubarev.developer@gmail.com, solidovic@gmail.com",
   "license": "MIT",
   "private": true,
   "scripts": {

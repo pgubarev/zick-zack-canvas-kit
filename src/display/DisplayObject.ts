@@ -1,7 +1,8 @@
 import { EventEmitter } from 'eventemitter3';
 
+import { rotateCanvas } from 'utils';
+
 import { IClickable, IDisplayable, IMask } from './interfaces';
-import { rotateCanvas } from '../utils/canvas';
 
 export abstract class BaseDisplayObject implements IDisplayable {
   protected _x = 0;
