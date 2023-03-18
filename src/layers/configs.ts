@@ -11,6 +11,8 @@ export type TConfigOptions = {
 
   canvasWidth?: number;
   canvasHeight?: number;
+
+  existingCanvas?: HTMLCanvasElement;
 } & TGlobalConfig;
 
 export type TConfig = {

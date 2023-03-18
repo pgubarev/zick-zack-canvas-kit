@@ -1,6 +1,6 @@
 import { Container } from '../display';
 import { TConfig } from './configs';
-import { createCanvasContext } from './utils';
+import { createCanvasContext, createCanvasAndContext } from './utils';
 
 export class Layer {
   public name: string;
@@ -13,12 +13,17 @@ export class Layer {
 
   private eventsEnabled = false;
 
-  constructor(name: string, config: TConfig) {
+  constructor(name: string, config: TConfig, existingCanvas?: HTMLCanvasElement) {
     this.name = name;
     this.config = config;
 
-    this.ctx = createCanvasContext(config);
-    this.canvas = this.ctx.canvas;
+    if (!existingCanvas) {
+        this.ctx = createCanvasAndContext(config);
+        this.canvas = this.ctx.canvas;
+    } else {
+        this.canvas = existingCanvas;
+        this.ctx = createCanvasContext(existingCanvas, config);
+    }
 
     this.stage = new Container();
 
