@@ -1,13 +1,19 @@
 import { DisplayObject } from './DisplayObject';
 import { IContainer } from './interfaces';
+import { getTemporaryCanvasContext } from '../layers/utils';
+import { ImageMask } from './ImageMask';
 
 export class Container extends DisplayObject implements IContainer {
   children: DisplayObject[] = [];
+
+  protected _bitmapCache: ImageBitmap = null;
 
   destroy(): void {
     super.destroy();
     this.children.forEach((child) => child.destroy());
     this.children = null;
+
+    this.clearBitmapCache();
 
     super.destroy();
   }
@@ -25,6 +31,12 @@ export class Container extends DisplayObject implements IContainer {
   render(ctx: CanvasRenderingContext2D): void {
     this.beforeRender(ctx);
 
+    if (this._bitmapCache) {
+      ctx.drawImage(this._bitmapCache, 0, 0, this._bitmapCache.width, this._bitmapCache.height);
+      this.afterRender(ctx);
+      return;
+    }
+
     if (this._mask === null) {
       this.renderChildren(ctx);
       this.afterRender(ctx);
@@ -40,6 +52,35 @@ export class Container extends DisplayObject implements IContainer {
       // TODO: it would be greate to add some logic to skip rendering
       //  for children outside container bounds
       this.children[i].render(ctx);
+    }
+  }
+
+  async cacheAsBitmap() {
+    if (this._mask) {
+      if (this._mask instanceof ImageMask) {
+        this._bitmapCache = await this._mask.renderToImageBitmap(this.renderChildren);
+        return;
+      }
+
+      throw new Error("Unsupported caching for non image mask");
+    }
+
+    const tmpCtx = getTemporaryCanvasContext();
+    const tmpCanvas = tmpCtx.canvas;
+
+    tmpCanvas.width = Math.max(tmpCanvas.width, this._width);
+    tmpCanvas.height = Math.max(tmpCanvas.height, this._height);
+
+    tmpCtx.clearRect(0, 0, this._width, this._height);
+    this.render(tmpCtx);
+
+    this._bitmapCache = await createImageBitmap(tmpCanvas, 0, 0, this._width, this._height);
+  }
+
+  clearBitmapCache() {
+    if (this._bitmapCache) {
+      this._bitmapCache.close();
+      this._bitmapCache = null;
     }
   }
 
