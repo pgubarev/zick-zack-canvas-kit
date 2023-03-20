@@ -72,7 +72,7 @@ export class Container extends DisplayObject implements IContainer {
     tmpCanvas.height = Math.max(tmpCanvas.height, this._height);
 
     tmpCtx.clearRect(0, 0, this._width, this._height);
-    this.render(tmpCtx);
+    this.renderChildren(tmpCtx);
 
     this._bitmapCache = await createImageBitmap(tmpCanvas, 0, 0, this._width, this._height);
   }
