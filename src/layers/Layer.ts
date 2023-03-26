@@ -1,6 +1,7 @@
-import { Container } from '../display';
+import { Container, DisplayObject } from '../display';
 import { TConfig } from './configs';
 import { createCanvasContext, createCanvasAndContext } from './utils';
+import { EventProxyHandler } from './events';
 
 export class Layer {
   public name: string;
@@ -12,10 +13,13 @@ export class Layer {
   public stage: Container;
 
   private eventsEnabled = false;
+  private interactedItems: DisplayObject[];
 
   constructor(name: string, config: TConfig, existingCanvas?: HTMLCanvasElement) {
     this.name = name;
     this.config = config;
+
+    this.interactedItems = null;
 
     if (!existingCanvas) {
         this.ctx = createCanvasAndContext(config);
@@ -45,7 +49,22 @@ export class Layer {
     this.stage.propagate(event, 'pointerup');
   }
   private handlePointerMove(event: PointerEvent) {
-    this.stage.propagate(event, 'pointermove');
+    const wrappedEvent = new Proxy(event, new EventProxyHandler());
+    this.stage.propagate(wrappedEvent, 'pointermove');
+
+    if (this.interactedItems && wrappedEvent.interactedItems) {
+      const currentEventInteracted: DisplayObject[] = wrappedEvent.interactedItems;
+
+      for (let i = 0; i < this.interactedItems.length; i++) {
+        if (!currentEventInteracted.includes(this.interactedItems[i])) {
+          this.interactedItems[i].propagate(event, 'pointerupoutside');
+        }
+      }
+
+      this.interactedItems.length = 0;
+    }
+
+    this.interactedItems = wrappedEvent.interactedItems;
   }
 
   enableCanvasEvents() {

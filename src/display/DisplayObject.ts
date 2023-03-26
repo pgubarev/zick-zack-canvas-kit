@@ -189,5 +189,9 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
   propagate(event: PointerEvent, type: string) {
     if (this._events === null) return;
     this._events.emit(type, event);
+    if ('interactedItems' in event) {
+      (<Array<any>>event.interactedItems).push(this);
+
+    }
   }
 }

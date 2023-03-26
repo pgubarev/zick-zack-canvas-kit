@@ -142,14 +142,20 @@ export class Container extends DisplayObject implements IContainer {
   }
 
   propagate(event: PointerEvent, type: string) {
-    for (let i = this.children.length - 1; i >= 0 && !event.defaultPrevented; i--) {
-      if (this.children[i].containsPoint(event.clientX, event.clientY)) {
-        this.children[i].propagate(event, type);
-        break;
+    if (type !== 'pointerupoutside') {
+      for (let i = this.children.length - 1; i >= 0 && !event.defaultPrevented; i--) {
+        if (this.children[i].containsPoint(event.clientX, event.clientY)) {
+          this.children[i].propagate(event, type);
+          break;
+        }
       }
     }
 
     if (this._events === null) return;
     this._events.emit(type, event);
+
+    if ('interactedItems' in event) {
+      (<Array<any>>event.interactedItems).push(this);
+    }
   }
 }
