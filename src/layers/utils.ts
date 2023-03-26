@@ -24,20 +24,25 @@ export function createCanvasContext(canvas: HTMLCanvasElement, config: TConfig):
 let temporaryCanvas: HTMLCanvasElement = null;
 let temporaryCanvasContext: CanvasRenderingContext2D = null;
 
-function setUpTemporaryCanvas() {
-  temporaryCanvas = <HTMLCanvasElement>document.createElement('canvas');
-  if (CONFIG.usePixelated) temporaryCanvas.style.imageRendering = 'pixelated';
+function createTemporaryCanvas(): HTMLCanvasElement {
+  const canvas = <HTMLCanvasElement>document.createElement('canvas');
+  if (CONFIG.usePixelated) canvas.style.imageRendering = 'pixelated';
 
-  temporaryCanvasContext = temporaryCanvas.getContext('2d');
-  setSmoothlingSetting(temporaryCanvasContext);
+  return canvas;
 }
 
-export function getTemporaryCanvas(): HTMLCanvasElement {
-  if (temporaryCanvas === null) setUpTemporaryCanvas();
-  return temporaryCanvas;
-}
+export function getTemporaryCanvasContext(create = false): CanvasRenderingContext2D {
+  if (create) {
+    const canvas = createTemporaryCanvas();
+    const ctx = canvas.getContext('2d');
+    setSmoothlingSetting(ctx);
+    return ctx;
+  }
 
-export function getTemporaryCanvasContext(): CanvasRenderingContext2D {
-  if (temporaryCanvas === null) setUpTemporaryCanvas();
+  if (temporaryCanvas === null) {
+    temporaryCanvas = createTemporaryCanvas();
+    temporaryCanvasContext = temporaryCanvas.getContext('2d');
+    setSmoothlingSetting(temporaryCanvasContext);
+  }
   return temporaryCanvasContext;
 }

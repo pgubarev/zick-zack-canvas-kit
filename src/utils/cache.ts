@@ -1,12 +1,11 @@
 import { IDisplayable } from '../display/interfaces';
-import { getTemporaryCanvas } from '../layers/utils';
+import { getTemporaryCanvasContext } from '../layers/utils';
 
 export async function createBitmapDataFrom(displayObject: IDisplayable): Promise<ImageBitmap> {
-  const tmpCanvas = getTemporaryCanvas();
-  tmpCanvas.width = Math.max(displayObject.width, tmpCanvas.width);
-  tmpCanvas.height = Math.max(displayObject.height, tmpCanvas.height);
+  const tmpCtx = getTemporaryCanvasContext();
 
-  const tmpCtx = tmpCanvas.getContext('2d');
+  tmpCtx.canvas.width = Math.max(displayObject.width, tmpCtx.canvas.width);
+  tmpCtx.canvas.height = Math.max(displayObject.height, tmpCtx.canvas.height);
 
   tmpCtx.setTransform(1, 0, 0, 1, 0, 0);
   tmpCtx.clearRect(0, 0, displayObject.width, displayObject.height);

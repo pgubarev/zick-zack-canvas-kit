@@ -1,7 +1,6 @@
 import { DisplayObject } from './DisplayObject';
 import { IContainer } from './interfaces';
 import { getTemporaryCanvasContext } from '../layers/utils';
-import { ImageMask } from './ImageMask';
 
 export class Container extends DisplayObject implements IContainer {
   children: DisplayObject[] = [];
@@ -56,15 +55,6 @@ export class Container extends DisplayObject implements IContainer {
   }
 
   async cacheAsBitmap() {
-    if (this._mask) {
-      if (this._mask instanceof ImageMask) {
-        this._bitmapCache = await this._mask.renderToImageBitmap(this.renderChildren);
-        return;
-      }
-
-      throw new Error("Unsupported caching for non image mask");
-    }
-
     const tmpCtx = getTemporaryCanvasContext();
     const tmpCanvas = tmpCtx.canvas;
 
@@ -72,7 +62,12 @@ export class Container extends DisplayObject implements IContainer {
     tmpCanvas.height = Math.max(tmpCanvas.height, this._height);
 
     tmpCtx.clearRect(0, 0, this._width, this._height);
-    this.renderChildren(tmpCtx);
+
+    if (this._mask) {
+      this._mask.renderWithMask(tmpCtx, this.renderChildren);
+    } else {
+      this.renderChildren(tmpCtx);
+    }
 
     this._bitmapCache = await createImageBitmap(tmpCanvas, 0, 0, this._width, this._height);
   }

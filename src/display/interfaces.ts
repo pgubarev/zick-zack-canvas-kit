@@ -37,7 +37,7 @@ export interface IDisplayable {
 }
 
 export interface IMask extends IDisplayable {
-  renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction);
+  renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction): void;
 }
 
 export interface IContainer extends IDisplayable {
@@ -48,7 +48,7 @@ export interface IContainer extends IDisplayable {
 }
 
 export interface IClickable {
-  propagate(event: PointerEvent, type: string);
+  propagate(event: PointerEvent, type: string): void;
 
   get events(): EventEmitter;
 }

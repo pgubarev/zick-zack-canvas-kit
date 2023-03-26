@@ -29,7 +29,7 @@ export class ImageMask extends BaseDisplayObject implements IMask {
     this._width = this.sourceWidth;
     this._height = this.sourceHeight;
 
-    this.tmpCtx = getTemporaryCanvasContext();
+    this.tmpCtx = getTemporaryCanvasContext(true);
 
     this.tmpCanvas = this.tmpCtx.canvas;
     this.tmpCanvas.width = Math.max(this.tmpCanvas.width, this._width);
@@ -49,6 +49,7 @@ export class ImageMask extends BaseDisplayObject implements IMask {
   }
 
   private renderMask() {
+    this.tmpCtx.translate(this._x, this.y);
     this.tmpCtx.globalCompositeOperation = 'destination-in';
     this.tmpCtx.drawImage(
       this.maskImage,
@@ -62,6 +63,7 @@ export class ImageMask extends BaseDisplayObject implements IMask {
       this._height,
     );
     this.tmpCtx.globalCompositeOperation = 'source-over';
+    this.tmpCtx.translate(-this._x, -this.y);
   }
 
   renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction) {
@@ -71,17 +73,9 @@ export class ImageMask extends BaseDisplayObject implements IMask {
     this.render(ctx);
   }
 
-  renderToImageBitmap(originalRenderFunction: RenderFunction): Promise<ImageBitmap> {
-    this.prepareMask();
-    originalRenderFunction.apply(this.parent, [this.tmpCtx]);
-    this.renderMask();
-
-    return createImageBitmap(this.tmpCanvas, 0, 0, this._width, this._height);
-  }
-
   render(ctx: CanvasRenderingContext2D) {
     this.renderMask();
-    ctx.drawImage(this.tmpCtx.canvas, 0, 0, this._width, this._height, this._x, this._y, this._width, this._height);
+    ctx.drawImage(this.tmpCtx.canvas, 0, 0, this._width, this._height, 0, 0, this._width, this._height);
   }
 
   set width(value: number) {
