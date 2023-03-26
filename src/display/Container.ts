@@ -1,6 +1,7 @@
 import { DisplayObject } from './DisplayObject';
 import { IContainer } from './interfaces';
 import { getTemporaryCanvasContext } from '../layers/utils';
+import { PointerEventContext } from 'layers/events';
 
 export class Container extends DisplayObject implements IContainer {
   children: DisplayObject[] = [];
@@ -141,21 +142,19 @@ export class Container extends DisplayObject implements IContainer {
     }
   }
 
-  propagate(event: PointerEvent, type: string) {
+  propagate(event: PointerEvent, type: string, context: PointerEventContext) {
     if (type !== 'pointerupoutside') {
       for (let i = this.children.length - 1; i >= 0 && !event.defaultPrevented; i--) {
         if (this.children[i].containsPoint(event.clientX, event.clientY)) {
-          this.children[i].propagate(event, type);
+          this.children[i].propagate(event, type, context);
           break;
         }
       }
     }
 
     if (this._events === null) return;
-    this._events.emit(type, event);
 
-    if ('interactedItems' in event) {
-      (<Array<any>>event.interactedItems).push(this);
-    }
+    this._events.emit(type, event);
+    context.registerInteraction(this);
   }
 }

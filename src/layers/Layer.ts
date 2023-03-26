@@ -1,7 +1,7 @@
 import { Container, DisplayObject } from '../display';
 import { TConfig } from './configs';
 import { createCanvasContext, createCanvasAndContext } from './utils';
-import { EventProxyHandler } from './events';
+import { PointerEventContext } from './events';
 
 export class Layer {
   public name: string;
@@ -13,13 +13,13 @@ export class Layer {
   public stage: Container;
 
   private eventsEnabled = false;
-  private interactedItems: DisplayObject[];
+  private previousEventContext: PointerEventContext;
 
   constructor(name: string, config: TConfig, existingCanvas?: HTMLCanvasElement) {
     this.name = name;
     this.config = config;
 
-    this.interactedItems = null;
+    this.previousEventContext = null;
 
     if (!existingCanvas) {
         this.ctx = createCanvasAndContext(config);
@@ -43,28 +43,28 @@ export class Layer {
   }
 
   private handlePointerDown(event: PointerEvent) {
-    this.stage.propagate(event, 'pointerdown');
+    this.stage.propagate(event, 'pointerdown', new PointerEventContext(event, 'pointerdown'));
   }
   private handlePointerUp(event: PointerEvent) {
-    this.stage.propagate(event, 'pointerup');
+    this.stage.propagate(event, 'pointerup', new PointerEventContext(event, 'pointerup'));
   }
   private handlePointerMove(event: PointerEvent) {
-    const wrappedEvent = new Proxy(event, new EventProxyHandler());
-    this.stage.propagate(wrappedEvent, 'pointermove');
+    const context = new PointerEventContext(event, 'pointermove');
+    this.stage.propagate(event, 'pointermove', context);
 
-    if (this.interactedItems && wrappedEvent.interactedItems) {
-      const currentEventInteracted: DisplayObject[] = wrappedEvent.interactedItems;
+    if (this.previousEventContext && context.interactedItems) {
+      const currentEventInteracted = context.interactedItems;
 
-      for (let i = 0; i < this.interactedItems.length; i++) {
-        if (!currentEventInteracted.includes(this.interactedItems[i])) {
-          this.interactedItems[i].propagate(event, 'pointerupoutside');
+      for (let i = 0; i < this.previousEventContext.interactedItems.length; i++) {
+        if (!currentEventInteracted.includes(this.previousEventContext.interactedItems[i])) {
+          this.previousEventContext.interactedItems[i].propagate(event, 'pointerupoutside', new PointerEventContext(event, 'pointerupoutside'));
         }
       }
 
-      this.interactedItems.length = 0;
+      this.previousEventContext.destroy();
     }
 
-    this.interactedItems = wrappedEvent.interactedItems;
+    this.previousEventContext = context;
   }
 
   enableCanvasEvents() {

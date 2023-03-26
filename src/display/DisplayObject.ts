@@ -2,6 +2,7 @@ import { EventEmitter } from 'eventemitter3';
 
 import { IClickable, IDisplayable, IMask } from './interfaces';
 import { rotateCanvas } from '../utils/canvas';
+import { PointerEventContext } from 'layers/events';
 
 export abstract class BaseDisplayObject implements IDisplayable {
   protected _x = 0;
@@ -186,12 +187,9 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
     return this._events;
   }
 
-  propagate(event: PointerEvent, type: string) {
+  propagate(event: PointerEvent, type: string, context: PointerEventContext) {
     if (this._events === null) return;
     this._events.emit(type, event);
-    if ('interactedItems' in event) {
-      (<Array<any>>event.interactedItems).push(this);
-
-    }
+    context.registerInteraction(this);
   }
 }

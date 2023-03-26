@@ -1,23 +1,25 @@
-export class EventProxyHandler {
-  interactedItems: [];
+import { IClickable } from '../display/interfaces';
 
-  constructor() {
+export class PointerEventContext {
+  public event: PointerEvent;
+  public eventType: string;
+
+  public interactedItems: IClickable[];
+
+  constructor(event: PointerEvent, eventType: string) {
+    this.event = event;
+    this.eventType = eventType;
+
     this.interactedItems = [];
   }
 
-  clear() {
-    this.interactedItems = null;
+  registerInteraction(item: IClickable) {
+    if (this.eventType !== 'pointerupoutside') this.interactedItems.push(item);
   }
 
-  get(obj, prop) {
-    if (prop === 'interactedItems') {
-      return this.interactedItems;
-    }
-
-    if (obj[prop] === 'function') {
-      obj[prop] = obj[prop].bind(obj);
-    }
-
-    return obj[prop];
+  destroy() {
+    this.event = null;
+    this.interactedItems.length = 0;
+    this.interactedItems = null;
   }
 }

@@ -1,4 +1,5 @@
 import { EventEmitter } from 'eventemitter3';
+import { PointerEventContext } from 'layers/events';
 
 import { RenderFunction } from './types';
 
@@ -22,8 +23,6 @@ export interface IDisplayable {
   get globalY(): number;
 
   updatePosition(): void;
-  containsPoint(clickX: number, clickY: number): boolean;
-
   parent: IDisplayable;
 
   get anchorX(): number;
@@ -48,7 +47,8 @@ export interface IContainer extends IDisplayable {
 }
 
 export interface IClickable {
-  propagate(event: PointerEvent, type: string): void;
+  propagate(event: PointerEvent, type: string, context: PointerEventContext): void;
+  containsPoint(clickX: number, clickY: number): boolean;
 
   get events(): EventEmitter;
 }
