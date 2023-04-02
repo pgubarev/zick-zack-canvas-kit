@@ -1,8 +1,8 @@
 import { EventEmitter } from 'eventemitter3';
 
-import { IClickable, IDisplayable, IMask } from './interfaces';
+import { IDisplayable, IMask } from './interfaces';
+import { IEvent, IInteractive } from '../events';
 import { rotateCanvas } from '../utils/canvas';
-import { PointerEventContext } from 'layers/events';
 
 export abstract class BaseDisplayObject implements IDisplayable {
   protected _x = 0;
@@ -98,7 +98,7 @@ export abstract class BaseDisplayObject implements IDisplayable {
   }
 }
 
-export abstract class DisplayObject extends BaseDisplayObject implements IClickable {
+export abstract class DisplayObject extends BaseDisplayObject implements IInteractive {
   protected _mask: IMask = null;
   protected _events: EventEmitter = null;
 
@@ -181,15 +181,14 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
     return super.containsPoint(clickX, clickY);
   }
 
+  handleEvent(event: IEvent): void {
+    if (this._events === null) return;
+    this._events.emit(event.type, event);
+  }
+
   get events(): EventEmitter {
     // Try to implement on demand creation for Event emitter
     if (this._events === null) this._events = new EventEmitter();
     return this._events;
-  }
-
-  propagate(event: PointerEvent, type: string, context: PointerEventContext) {
-    if (this._events === null) return;
-    this._events.emit(type, event);
-    context.registerInteraction(this);
   }
 }

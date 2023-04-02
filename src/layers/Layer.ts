@@ -1,7 +1,7 @@
-import { Container, DisplayObject } from '../display';
+import { Container } from '../display';
 import { TConfig } from './configs';
 import { createCanvasContext, createCanvasAndContext } from './utils';
-import { PointerEventContext } from './events';
+import { handlePointerEvent, ZickZackEvent } from '../events';
 
 export class Layer {
   public name: string;
@@ -11,15 +11,13 @@ export class Layer {
   public ctx: CanvasRenderingContext2D;
 
   public stage: Container;
+  private lastPointerEvent: ZickZackEvent | null;
 
   private eventsEnabled = false;
-  private previousEventContext: PointerEventContext;
 
   constructor(name: string, config: TConfig, existingCanvas?: HTMLCanvasElement) {
     this.name = name;
     this.config = config;
-
-    this.previousEventContext = null;
 
     if (!existingCanvas) {
         this.ctx = createCanvasAndContext(config);
@@ -30,6 +28,8 @@ export class Layer {
     }
 
     this.stage = new Container();
+
+    this.lastPointerEvent = null;
 
     this.handlePointerDown = this.handlePointerDown.bind(this);
     this.handlePointerUp = this.handlePointerUp.bind(this);
@@ -42,29 +42,19 @@ export class Layer {
     this.stage.render(this.ctx);
   }
 
-  private handlePointerDown(event: PointerEvent) {
-    this.stage.propagate(event, 'pointerdown', new PointerEventContext(event, 'pointerdown'));
+  private handlePointerDown(canvasEvent: PointerEvent) {
+    const event = new ZickZackEvent(canvasEvent, 'pointerdown');
+    handlePointerEvent(event, null, this.stage);
   }
-  private handlePointerUp(event: PointerEvent) {
-    this.stage.propagate(event, 'pointerup', new PointerEventContext(event, 'pointerup'));
+  private handlePointerUp(canvasEvent: PointerEvent) {
+    const event = new ZickZackEvent(canvasEvent, 'pointerup');
+    handlePointerEvent(event, null, this.stage);
   }
-  private handlePointerMove(event: PointerEvent) {
-    const context = new PointerEventContext(event, 'pointermove');
-    this.stage.propagate(event, 'pointermove', context);
+  private handlePointerMove(canvasEvent: PointerEvent) {
+    const event = new ZickZackEvent(canvasEvent, 'pointermove');
+    handlePointerEvent(event, this.lastPointerEvent, this.stage);
 
-    if (this.previousEventContext && context.interactedItems) {
-      const currentEventInteracted = context.interactedItems;
-
-      for (let i = 0; i < this.previousEventContext.interactedItems.length; i++) {
-        if (!currentEventInteracted.includes(this.previousEventContext.interactedItems[i])) {
-          this.previousEventContext.interactedItems[i].propagate(event, 'pointerupoutside', new PointerEventContext(event, 'pointerupoutside'));
-        }
-      }
-
-      this.previousEventContext.destroy();
-    }
-
-    this.previousEventContext = context;
+    this.lastPointerEvent = event;
   }
 
   enableCanvasEvents() {

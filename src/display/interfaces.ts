@@ -1,6 +1,3 @@
-import { EventEmitter } from 'eventemitter3';
-import { PointerEventContext } from 'layers/events';
-
 import { RenderFunction } from './types';
 
 export interface IDisplayable {
@@ -37,6 +34,7 @@ export interface IDisplayable {
 
 export interface IMask extends IDisplayable {
   renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction): void;
+  containsPoint(clickX: number, clickY: number): boolean;
 }
 
 export interface IContainer extends IDisplayable {
@@ -44,11 +42,4 @@ export interface IContainer extends IDisplayable {
 
   appendChild(child: IDisplayable): void;
   removeChild(child: IDisplayable): void;
-}
-
-export interface IClickable {
-  propagate(event: PointerEvent, type: string, context: PointerEventContext): void;
-  containsPoint(clickX: number, clickY: number): boolean;
-
-  get events(): EventEmitter;
 }
