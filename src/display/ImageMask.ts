@@ -49,7 +49,6 @@ export class ImageMask extends BaseDisplayObject implements IMask {
   }
 
   private renderMask() {
-    this.tmpCtx.translate(this._x, this.y);
     this.tmpCtx.globalCompositeOperation = 'destination-in';
     this.tmpCtx.drawImage(
       this.maskImage,
@@ -63,18 +62,24 @@ export class ImageMask extends BaseDisplayObject implements IMask {
       this._height,
     );
     this.tmpCtx.globalCompositeOperation = 'source-over';
+  }
+
+  private renderOriginal(originalRenderFunction: RenderFunction) {
     this.tmpCtx.translate(-this._x, -this.y);
+    originalRenderFunction.apply(this.parent, [this.tmpCtx]);
+    this.tmpCtx.translate(this._x, this.y);
   }
 
   renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction) {
     applyContextSettings(ctx, this.tmpCtx);
+
     this.prepareMask();
-    originalRenderFunction.apply(this.parent, [this.tmpCtx]);
+    this.renderOriginal(originalRenderFunction);
+    this.renderMask();
     this.render(ctx);
   }
 
   render(ctx: CanvasRenderingContext2D) {
-    this.renderMask();
     ctx.drawImage(this.tmpCtx.canvas, 0, 0, this._width, this._height, 0, 0, this._width, this._height);
   }
 
