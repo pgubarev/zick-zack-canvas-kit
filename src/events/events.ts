@@ -32,6 +32,7 @@ export class ZickZackEvent {
     return this._original;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public stopImmediatePropagation(): void {
     throw new EventPropagationStoped();
   }

@@ -1,7 +1,7 @@
 import { EventEmitter } from 'eventemitter3';
 
 import { IDisplayable, IMask } from './interfaces';
-import { IEvent, IInteractive } from '../events';
+import { IInteractive } from '../events/interfaces';
 import { rotateCanvas } from '../utils/canvas';
 
 export abstract class BaseDisplayObject implements IDisplayable {
