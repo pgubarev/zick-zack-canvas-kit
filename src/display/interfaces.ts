@@ -19,6 +19,7 @@ export interface IDisplayable {
   get globalX(): number;
   get globalY(): number;
 
+  containsPoint(clickX: number, clickY: number): boolean;
   updatePosition(): void;
   parent: IDisplayable;
 
@@ -34,7 +35,6 @@ export interface IDisplayable {
 
 export interface IMask extends IDisplayable {
   renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction): void;
-  containsPoint(clickX: number, clickY: number): boolean;
 }
 
 export interface IContainer extends IDisplayable {

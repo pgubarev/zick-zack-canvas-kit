@@ -104,6 +104,14 @@ export abstract class DisplayObject extends BaseDisplayObject implements IIntera
 
   protected _alpha: number;
 
+  public interactive: boolean;
+
+  constructor() {
+    super();
+
+    this.interactive = false;
+  }
+
   destroy() {
     super.destroy();
 
@@ -179,11 +187,6 @@ export abstract class DisplayObject extends BaseDisplayObject implements IIntera
   containsPoint(clickX: number, clickY: number): boolean {
     if (this._mask !== null) return this._mask.containsPoint(clickX, clickY);
     return super.containsPoint(clickX, clickY);
-  }
-
-  handleEvent(event: IEvent): void {
-    if (this._events === null) return;
-    this._events.emit(event.type, event);
   }
 
   get events(): EventEmitter {

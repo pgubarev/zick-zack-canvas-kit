@@ -1,6 +1,5 @@
 import { EventEmitter } from 'eventemitter3';
 
-
 export interface IEvent {
   get type(): string;
   get original(): Event;
@@ -9,8 +8,7 @@ export interface IEvent {
 }
 
 export interface IInteractive {
-  containsPoint(clickX: number, clickY: number): boolean;
-  handleEvent(event: IEvent): void;
+  interactive: boolean;
 
   get events(): EventEmitter;
 }
