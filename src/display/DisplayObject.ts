@@ -176,12 +176,12 @@ export abstract class DisplayObject extends BaseDisplayObject implements IIntera
   beforeRender(ctx: CanvasRenderingContext2D) {
     ctx.globalAlpha -= 1 - this._alpha;
 
-    if (this._rotation !== 0) rotateCanvas(ctx, this._rotation, this.anchorX, this.anchorY);
+    if (this._rotation !== 0) rotateCanvas(ctx, this._rotation, this.x + this.anchorX, this.y + this.anchorY);
   }
   afterRender(ctx: CanvasRenderingContext2D) {
     ctx.globalAlpha += 1 - this._alpha;
 
-    if (this._rotation !== 0) rotateCanvas(ctx, -this._rotation, this.anchorX, this.anchorY);
+    if (this._rotation !== 0) rotateCanvas(ctx, -this._rotation, this.x + this.anchorX, this.y + this.anchorY);
   }
 
   containsPoint(clickX: number, clickY: number): boolean {

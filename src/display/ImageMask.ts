@@ -3,12 +3,12 @@ import { BaseDisplayObject } from './DisplayObject';
 import { IMask } from './interfaces';
 import { RasterCanvasImageSource, RenderFunction } from './types';
 import { getTemporaryCanvasContext } from '../layers/utils';
-import { applyContextSettings } from '../utils/canvas';
+import { applyContextSettings, rotateCanvas } from '../utils/canvas';
 
 export class ImageMask extends BaseDisplayObject implements IMask {
   public maskImage: RasterCanvasImageSource;
 
-  private tmpCanvas: HTMLCanvasElement;
+  public tmpCanvas: HTMLCanvasElement;
   private tmpCtx: CanvasRenderingContext2D;
 
   public sourceX: number;
@@ -48,26 +48,12 @@ export class ImageMask extends BaseDisplayObject implements IMask {
     this.tmpCtx.clearRect(0, 0, this._width, this._height);
   }
 
-  private renderMask() {
-    this.tmpCtx.globalCompositeOperation = 'destination-in';
-    this.tmpCtx.drawImage(
-      this.maskImage,
-      this.sourceX,
-      this.sourceY,
-      this.sourceWidth,
-      this.sourceHeight,
-      0,
-      0,
-      this._width,
-      this._height,
-    );
-    this.tmpCtx.globalCompositeOperation = 'source-over';
-  }
-
   private renderOriginal(originalRenderFunction: RenderFunction) {
-    this.tmpCtx.translate(-this._x, -this.y);
+    this.tmpCtx.translate(-this.x, -this.y);
+    if (this._rotation !== 0) rotateCanvas(this.tmpCtx, -this._rotation, this.x + this.anchorX, this.y + this.anchorY);
     originalRenderFunction.apply(this.parent, [this.tmpCtx]);
-    this.tmpCtx.translate(this._x, this.y);
+    if (this._rotation !== 0) rotateCanvas(this.tmpCtx, this._rotation, this.x + this.anchorX, this.y + this.anchorY);
+    this.tmpCtx.translate(this.x, this.y);
   }
 
   renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction) {
@@ -75,17 +61,28 @@ export class ImageMask extends BaseDisplayObject implements IMask {
 
     this.prepareMask();
     this.renderOriginal(originalRenderFunction);
-    this.renderMask();
     this.render(ctx);
   }
 
   render(ctx: CanvasRenderingContext2D) {
-    ctx.drawImage(this.tmpCtx.canvas, 0, 0, this._width, this._height, 0, 0, this._width, this._height);
+    const maskGlobalAnchorX = this.globalX + this.anchorX;
+    const maskGlobalAnchorY = this.globalY + this.anchorY;
+
+    if (this._rotation !== 0) rotateCanvas(ctx, this._rotation, maskGlobalAnchorX, maskGlobalAnchorY);
+    ctx.drawImage(this.tmpCtx.canvas, 0, 0, this._width, this._height, this._x, this._y, this._width, this._height);
+    if (this._rotation !== 0) rotateCanvas(ctx, -this._rotation, maskGlobalAnchorX, maskGlobalAnchorY);
   }
 
+  get width(): number {
+    return this._width;
+  }
   set width(value: number) {
     this._width = value | 0;
     this.tmpCanvas.width = Math.max(this.tmpCanvas.width, this._width);
+  }
+
+  get height(): number {
+    return this._height;
   }
   set height(value: number) {
     this._height = value | 0;
