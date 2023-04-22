@@ -49,11 +49,13 @@ export class ImageMask extends BaseDisplayObject implements IMask {
   }
 
   private renderOriginal(originalRenderFunction: RenderFunction) {
+    this.tmpCtx.save();
+
     this.tmpCtx.translate(-this.x, -this.y);
-    if (this._rotation !== 0) rotateCanvas(this.tmpCtx, -this._rotation, this.x + this.anchorX, this.y + this.anchorY);
+    if (this._rotation !== 0) rotateCanvas(this.tmpCtx, -this._rotation, this.anchorX, this.anchorY);
+
     originalRenderFunction.apply(this.parent, [this.tmpCtx]);
-    if (this._rotation !== 0) rotateCanvas(this.tmpCtx, this._rotation, this.x + this.anchorX, this.y + this.anchorY);
-    this.tmpCtx.translate(this.x, this.y);
+    this.tmpCtx.restore();
   }
 
   renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction) {
@@ -65,12 +67,12 @@ export class ImageMask extends BaseDisplayObject implements IMask {
   }
 
   render(ctx: CanvasRenderingContext2D) {
-    const maskGlobalAnchorX = this.globalX + this.anchorX;
-    const maskGlobalAnchorY = this.globalY + this.anchorY;
+    ctx.save()
+    ctx.translate(this.x, this.y);
+    if (this._rotation !== 0) rotateCanvas(ctx, this._rotation, this.anchorX, this.anchorY);
 
-    if (this._rotation !== 0) rotateCanvas(ctx, this._rotation, maskGlobalAnchorX, maskGlobalAnchorY);
-    ctx.drawImage(this.tmpCtx.canvas, 0, 0, this._width, this._height, this._x, this._y, this._width, this._height);
-    if (this._rotation !== 0) rotateCanvas(ctx, -this._rotation, maskGlobalAnchorX, maskGlobalAnchorY);
+    ctx.drawImage(this.tmpCtx.canvas, 0, 0, this._width, this._height, 0, 0, this._width, this._height);
+    ctx.restore()
   }
 
   get width(): number {
