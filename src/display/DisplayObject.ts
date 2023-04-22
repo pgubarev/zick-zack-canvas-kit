@@ -1,6 +1,7 @@
 import { EventEmitter } from 'eventemitter3';
 
-import { IClickable, IDisplayable, IMask } from './interfaces';
+import { IDisplayable, IMask } from './interfaces';
+import { IInteractive } from '../events/interfaces';
 import { rotateCanvas } from '../utils/canvas';
 
 export abstract class BaseDisplayObject implements IDisplayable {
@@ -19,7 +20,7 @@ export abstract class BaseDisplayObject implements IDisplayable {
 
   public parent: IDisplayable = null;
 
-  abstract render(ctx: CanvasRenderingContext2D);
+  abstract render(ctx: CanvasRenderingContext2D): void;
 
   destroy() {
     this.parent = null;
@@ -97,11 +98,19 @@ export abstract class BaseDisplayObject implements IDisplayable {
   }
 }
 
-export abstract class DisplayObject extends BaseDisplayObject implements IClickable {
+export abstract class DisplayObject extends BaseDisplayObject implements IInteractive {
   protected _mask: IMask = null;
   protected _events: EventEmitter = null;
 
   protected _alpha: number;
+
+  public interactive: boolean;
+
+  constructor() {
+    super();
+
+    this.interactive = false;
+  }
 
   destroy() {
     super.destroy();
@@ -167,12 +176,12 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
   beforeRender(ctx: CanvasRenderingContext2D) {
     ctx.globalAlpha -= 1 - this._alpha;
 
-    if (this._rotation !== 0) rotateCanvas(ctx, this._rotation, this.anchorX, this.anchorY);
+    if (this._rotation !== 0) rotateCanvas(ctx, this._rotation, this.x + this.anchorX, this.y + this.anchorY);
   }
   afterRender(ctx: CanvasRenderingContext2D) {
     ctx.globalAlpha += 1 - this._alpha;
 
-    if (this._rotation !== 0) rotateCanvas(ctx, -this._rotation, this.anchorX, this.anchorY);
+    if (this._rotation !== 0) rotateCanvas(ctx, -this._rotation, this.x + this.anchorX, this.y + this.anchorY);
   }
 
   containsPoint(clickX: number, clickY: number): boolean {
@@ -184,10 +193,5 @@ export abstract class DisplayObject extends BaseDisplayObject implements IClicka
     // Try to implement on demand creation for Event emitter
     if (this._events === null) this._events = new EventEmitter();
     return this._events;
-  }
-
-  propagate(event: PointerEvent, type: string) {
-    if (this._events === null) return;
-    this._events.emit(type, event);
   }
 }

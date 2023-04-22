@@ -1,5 +1,3 @@
-import { EventEmitter } from 'eventemitter3';
-
 import { RenderFunction } from './types';
 
 export interface IDisplayable {
@@ -21,9 +19,8 @@ export interface IDisplayable {
   get globalX(): number;
   get globalY(): number;
 
-  updatePosition(): void;
   containsPoint(clickX: number, clickY: number): boolean;
-
+  updatePosition(): void;
   parent: IDisplayable;
 
   get anchorX(): number;
@@ -37,7 +34,7 @@ export interface IDisplayable {
 }
 
 export interface IMask extends IDisplayable {
-  renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction);
+  renderWithMask(ctx: CanvasRenderingContext2D, originalRenderFunction: RenderFunction): void;
 }
 
 export interface IContainer extends IDisplayable {
@@ -45,10 +42,4 @@ export interface IContainer extends IDisplayable {
 
   appendChild(child: IDisplayable): void;
   removeChild(child: IDisplayable): void;
-}
-
-export interface IClickable {
-  propagate(event: PointerEvent, type: string);
-
-  get events(): EventEmitter;
 }

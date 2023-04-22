@@ -1,13 +1,18 @@
 import { DisplayObject } from './DisplayObject';
 import { IContainer } from './interfaces';
+import { getTemporaryCanvasContext } from '../layers/utils';
 
 export class Container extends DisplayObject implements IContainer {
   children: DisplayObject[] = [];
+
+  protected _bitmapCache: ImageBitmap = null;
 
   destroy(): void {
     super.destroy();
     this.children.forEach((child) => child.destroy());
     this.children = null;
+
+    this.clearBitmapCache();
 
     super.destroy();
   }
@@ -25,6 +30,12 @@ export class Container extends DisplayObject implements IContainer {
   render(ctx: CanvasRenderingContext2D): void {
     this.beforeRender(ctx);
 
+    if (this._bitmapCache) {
+      ctx.drawImage(this._bitmapCache, 0, 0, this._bitmapCache.width, this._bitmapCache.height);
+      this.afterRender(ctx);
+      return;
+    }
+
     if (this._mask === null) {
       this.renderChildren(ctx);
       this.afterRender(ctx);
@@ -40,6 +51,31 @@ export class Container extends DisplayObject implements IContainer {
       // TODO: it would be greate to add some logic to skip rendering
       //  for children outside container bounds
       this.children[i].render(ctx);
+    }
+  }
+
+  async cacheAsBitmap() {
+    const tmpCtx = getTemporaryCanvasContext();
+    const tmpCanvas = tmpCtx.canvas;
+
+    tmpCanvas.width = Math.max(tmpCanvas.width, this._width);
+    tmpCanvas.height = Math.max(tmpCanvas.height, this._height);
+
+    tmpCtx.clearRect(0, 0, this._width, this._height);
+
+    if (this._mask) {
+      this._mask.renderWithMask(tmpCtx, this.renderChildren);
+    } else {
+      this.renderChildren(tmpCtx);
+    }
+
+    this._bitmapCache = await createImageBitmap(tmpCanvas, 0, 0, this._width, this._height);
+  }
+
+  clearBitmapCache() {
+    if (this._bitmapCache) {
+      this._bitmapCache.close();
+      this._bitmapCache = null;
     }
   }
 
@@ -103,17 +139,5 @@ export class Container extends DisplayObject implements IContainer {
     for (let i = 0; i < this.children.length; i++) {
       this.children[i].updatePosition();
     }
-  }
-
-  propagate(event: PointerEvent, type: string) {
-    for (let i = this.children.length - 1; i >= 0 && !event.defaultPrevented; i--) {
-      if (this.children[i].containsPoint(event.clientX, event.clientY)) {
-        this.children[i].propagate(event, type);
-        break;
-      }
-    }
-
-    if (this._events === null) return;
-    this._events.emit(type, event);
   }
 }

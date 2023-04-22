@@ -1,11 +1,6 @@
 import { DisplayObject } from '../DisplayObject';
 import { getTemporaryCanvasContext } from '../../layers/utils';
-import { TextStyle } from './types';
-
-
-type MultilineTextStyle = {
-  'textAlign': 'left' | 'center' | 'right';
-} & TextStyle
+import { MultilineTextStyle } from './types';
 
 export class MultilineText extends DisplayObject {
   private _text: string[];

@@ -7,5 +7,5 @@ export abstract class BasicGraphic extends DisplayObject {
     this.afterRender(ctx);
   }
 
-  abstract renderGraphic(ctx: CanvasRenderingContext2D);
+  abstract renderGraphic(ctx: CanvasRenderingContext2D): void;
 }
