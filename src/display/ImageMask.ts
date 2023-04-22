@@ -67,6 +67,9 @@ export class ImageMask extends BaseDisplayObject implements IMask {
   }
 
   render(ctx: CanvasRenderingContext2D) {
+    this.tmpCtx.globalCompositeOperation = 'destination-in';
+    this.tmpCtx.drawImage(this.maskImage, 0, 0, this._width, this._height, 0, 0, this._width, this._height);
+
     ctx.save()
     ctx.translate(this.x, this.y);
     if (this._rotation !== 0) rotateCanvas(ctx, this._rotation, this.anchorX, this.anchorY);
