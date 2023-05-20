@@ -8,7 +8,7 @@ import { applyContextSettings, rotateCanvas } from '../utils/canvas';
 export class ImageMask extends BaseDisplayObject implements IMask {
   public maskImage: RasterCanvasImageSource;
 
-  public tmpCanvas: HTMLCanvasElement;
+  private tmpCanvas: HTMLCanvasElement;
   private tmpCtx: CanvasRenderingContext2D;
 
   public sourceX: number;
@@ -41,6 +41,7 @@ export class ImageMask extends BaseDisplayObject implements IMask {
 
     this.maskImage = null;
     this.tmpCtx = null;
+    this.tmpCanvas = null;
   }
 
   private prepareMask() {

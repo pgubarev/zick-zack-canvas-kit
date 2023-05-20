@@ -6,9 +6,6 @@ type TGlobalConfig = {
 }
 
 export type TConfigOptions = {
-  baseWidth: number;
-  baseHeight: number;
-
   canvasWidth?: number;
   canvasHeight?: number;
 
@@ -16,9 +13,6 @@ export type TConfigOptions = {
 } & TGlobalConfig;
 
 export type TConfig = {
-  baseWidth: number;
-  baseHeight: number;
-
   canvasWidth: number;
   canvasHeight: number;
 } & TGlobalConfig;
@@ -33,8 +27,6 @@ export function createLayerConfig(options: TConfigOptions): TConfig {
   const canvasHeight = options.canvasHeight || getDocumentHeight();
 
   return {
-    baseWidth: options.baseWidth,
-    baseHeight: options.baseHeight,
     imageSmoothingQuality: options.imageSmoothingQuality || CONFIG.imageSmoothingQuality,
     usePixelated: options.usePixelated !== undefined ? options.usePixelated : true,
     canvasWidth,

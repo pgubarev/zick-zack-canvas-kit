@@ -58,4 +58,11 @@ export class Circle extends BasicGraphic {
         ctx.fill();
     }
   }
+
+  containsPoint(clickX: number, clickY: number): boolean {
+    const x = (clickX - this.globalX)**2;
+    const y = (clickY - this.globalY)**2;
+
+    return Math.sqrt(x + y) < this.radius;
+  }
 }
