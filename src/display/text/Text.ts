@@ -2,7 +2,6 @@ import { DisplayObject } from '../DisplayObject';
 import { getTemporaryCanvasContext } from '../../layers/utils';
 import { TextStyle } from './types';
 
-
 export class Text extends DisplayObject {
   private _text: string;
 

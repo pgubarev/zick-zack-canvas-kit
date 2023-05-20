@@ -71,12 +71,12 @@ export class ImageMask extends BaseDisplayObject implements IMask {
     this.tmpCtx.globalCompositeOperation = 'destination-in';
     this.tmpCtx.drawImage(this.maskImage, 0, 0, this._width, this._height, 0, 0, this._width, this._height);
 
-    ctx.save()
+    ctx.save();
     ctx.translate(this.x, this.y);
     if (this._rotation !== 0) rotateCanvas(ctx, this._rotation, this.anchorX, this.anchorY);
 
     ctx.drawImage(this.tmpCtx.canvas, 0, 0, this._width, this._height, 0, 0, this._width, this._height);
-    ctx.restore()
+    ctx.restore();
   }
 
   get width(): number {

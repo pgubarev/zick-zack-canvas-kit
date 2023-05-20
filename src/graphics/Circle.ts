@@ -10,12 +10,12 @@ export class Circle extends BasicGraphic {
   public stroke: boolean;
 
   constructor(
-      radius: number,
-      fillStyle: string | CanvasGradient | CanvasPattern,
-      startAngle = 0,
-      endAngle = 2 * Math.PI,
-      counterclockwise = false,
-      stroke = false,
+    radius: number,
+    fillStyle: string | CanvasGradient | CanvasPattern,
+    startAngle = 0,
+    endAngle = 2 * Math.PI,
+    counterclockwise = false,
+    stroke = false,
   ) {
     super();
 
@@ -29,13 +29,13 @@ export class Circle extends BasicGraphic {
   }
 
   set radius(value: number) {
-      this._radius = value;
-      this._width = this._radius * 2;
-      this._height = this._radius * 2;
+    this._radius = value;
+    this._width = this._radius * 2;
+    this._height = this._radius * 2;
   }
 
   get radius(): number {
-      return this._radius;
+    return this._radius;
   }
 
   destroy() {
@@ -45,23 +45,30 @@ export class Circle extends BasicGraphic {
 
   renderGraphic(ctx: CanvasRenderingContext2D) {
     if (this.stroke) {
-        ctx.strokeStyle = this.fillStyle;
+      ctx.strokeStyle = this.fillStyle;
     } else {
-        ctx.fillStyle = this.fillStyle;
+      ctx.fillStyle = this.fillStyle;
     }
 
     ctx.beginPath();
-    ctx.arc(this._x + this._radius, this._y + this._radius, this._radius, this.startAngle, this.endAngle, this.counterclockwise);
+    ctx.arc(
+      this._x + this._radius,
+      this._y + this._radius,
+      this._radius,
+      this.startAngle,
+      this.endAngle,
+      this.counterclockwise,
+    );
     if (this.stroke) {
-        ctx.stroke();
+      ctx.stroke();
     } else {
-        ctx.fill();
+      ctx.fill();
     }
   }
 
   containsPoint(clickX: number, clickY: number): boolean {
-    const x = (clickX - this.globalX)**2;
-    const y = (clickY - this.globalY)**2;
+    const x = (clickX - this.globalX) ** 2;
+    const y = (clickY - this.globalY) ** 2;
 
     return Math.sqrt(x + y) < this.radius;
   }

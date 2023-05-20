@@ -38,9 +38,17 @@ export class MultilineText extends DisplayObject {
         if (!this.style.textAlign || this.style.textAlign === 'left')
           ctx.fillText(this._text[i], this._x, this._y + (i + 1) * this._lineHeight);
         else if (this.style.textAlign === 'center') {
-          ctx.fillText(this._text[i], this._x + (this._width - this.metrix[i].width) / 2, this._y + (i + 1) * this._lineHeight);
+          ctx.fillText(
+            this._text[i],
+            this._x + (this._width - this.metrix[i].width) / 2,
+            this._y + (i + 1) * this._lineHeight,
+          );
         } else {
-          ctx.fillText(this._text[i], this._x + this._width - this.metrix[i].width, this._y + (i + 1) * this._lineHeight);
+          ctx.fillText(
+            this._text[i],
+            this._x + this._width - this.metrix[i].width,
+            this._y + (i + 1) * this._lineHeight,
+          );
         }
       }
     }
@@ -53,9 +61,17 @@ export class MultilineText extends DisplayObject {
         if (!this.style.textAlign || this.style.textAlign === 'left')
           ctx.strokeText(this._text[i], this._x, this._y + (i + 1) * this._lineHeight);
         else if (this.style.textAlign === 'center') {
-          ctx.strokeText(this._text[i], this._x + (this._width - this.metrix[i].width) / 2, this._y + (i + 1) * this._lineHeight);
+          ctx.strokeText(
+            this._text[i],
+            this._x + (this._width - this.metrix[i].width) / 2,
+            this._y + (i + 1) * this._lineHeight,
+          );
         } else {
-          ctx.strokeText(this._text[i], this._x + this._width - this.metrix[i].width, this._y + (i + 1) * this._lineHeight);
+          ctx.strokeText(
+            this._text[i],
+            this._x + this._width - this.metrix[i].width,
+            this._y + (i + 1) * this._lineHeight,
+          );
         }
       }
     }
@@ -79,10 +95,9 @@ export class MultilineText extends DisplayObject {
     let largestLine: TextMetrics = null;
 
     for (let i = 0; i < this._text.length; i++) {
-        this.metrix[i] = tmpContext.measureText(this._text[i]);
+      this.metrix[i] = tmpContext.measureText(this._text[i]);
 
-        if (!largestLine || largestLine.width < this.metrix[i].width)
-          largestLine = this.metrix[i];
+      if (!largestLine || largestLine.width < this.metrix[i].width) largestLine = this.metrix[i];
     }
 
     this._width = largestLine.width;

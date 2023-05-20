@@ -7,5 +7,5 @@ export type TextStyle = {
 };
 
 export type MultilineTextStyle = {
-  'textAlign': 'left' | 'center' | 'right';
-} & TextStyle
+  textAlign: 'left' | 'center' | 'right';
+} & TextStyle;

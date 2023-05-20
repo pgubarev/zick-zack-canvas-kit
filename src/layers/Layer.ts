@@ -20,11 +20,11 @@ export class Layer {
     this.config = config;
 
     if (!existingCanvas) {
-        this.ctx = createCanvasAndContext(config);
-        this.canvas = this.ctx.canvas;
+      this.ctx = createCanvasAndContext(config);
+      this.canvas = this.ctx.canvas;
     } else {
-        this.canvas = existingCanvas;
-        this.ctx = createCanvasContext(existingCanvas, config);
+      this.canvas = existingCanvas;
+      this.ctx = createCanvasContext(existingCanvas, config);
     }
 
     this.stage = new Container();

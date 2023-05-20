@@ -3,7 +3,7 @@ import { getDocumentHeight, getDocumentWidth } from '../utils/browser';
 type TGlobalConfig = {
   usePixelated: boolean;
   imageSmoothingQuality: ImageSmoothingQuality | 'disabled';
-}
+};
 
 export type TConfigOptions = {
   canvasWidth?: number;
