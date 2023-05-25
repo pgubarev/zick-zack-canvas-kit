@@ -20,6 +20,10 @@ export class ScrollContainer extends Container {
 
   private lastX: number | null;
   private lastY: number | null;
+
+  private deltaX: number;
+  private deltaY: number;
+
   private dragging: boolean;
   private scrolling: boolean;
 
@@ -30,6 +34,7 @@ export class ScrollContainer extends Container {
     this.content = content;
     this.content.x = 0;
     this.content.y = 0;
+
     if (this.content.parent) {
       throw new Error('Scroll content should not be be added to any other container');
     }
@@ -46,14 +51,18 @@ export class ScrollContainer extends Container {
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onDragMove = this.onDragMove.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
+    this.onDragCanceled = this.onDragCanceled.bind(this);
 
     this.events.on('pointerdown', this.onDragStart);
     this.events.on('pointerup', this.onDragEnd);
-    this.events.on('pointerupoutside', this.onDragEnd);
+    this.events.on('pointerupoutside', this.onDragCanceled);
     this.events.on('pointermove', this.onDragMove);
 
     this._width = this.visibleAreaWidth;
     this._height = this.visibleAreaHeight;
+
+    this.deltaX = 0;
+    this.deltaY = 0;
   }
 
   destroy() {
@@ -85,7 +94,7 @@ export class ScrollContainer extends Container {
     this.scrolling = false;
   }
 
-  scrollTo(x: number, y: number) {
+  scrollTo(x: number, y: number, canceled: boolean) {
     this.content.x = x;
     this.content.y = y;
   }
@@ -96,46 +105,59 @@ export class ScrollContainer extends Container {
     this.lastX = event.pointerX;
     this.lastY = event.pointerY;
     this.dragging = true;
+
+    this.deltaX = 0;
+    this.deltaY = 0;
   }
 
   onDragMove(event: ZickZackEvent) {
     if (!this.dragging) return;
 
+    let toX = this.content.x;
+    let toY = this.content.y;
+
     if (this.scrollDirection === 'vertical' || this.scrollDirection === 'both') {
-      this.content.y += event.pointerY - this.lastY;
+      this.deltaY += event.pointerY - this.lastY;
+      toY += event.pointerY - this.lastY;
     }
 
     if (this.scrollDirection === 'horizontal' || this.scrollDirection === 'both') {
-      this.content.x += event.pointerX - this.lastX;
+      this.deltaX += event.pointerX - this.lastX;
+      toX += event.pointerX - this.lastX;
     }
+
+    this.scrollTo(toX, toY, false);
 
     this.lastX = event.pointerX;
     this.lastY = event.pointerY;
   }
 
   onDragEnd() {
-    let toX = this.content.x;
-    let toY = this.content.y;
+    let toX = this.content.x + this.deltaX;
+    let toY = this.content.y + this.deltaY;
 
     if (this.scrollDirection === 'vertical' || this.scrollDirection === 'both') {
-      if (this.content.y > 0) toY = 0;
-
-      if (this.content.y + this.content.height < this.visibleAreaHeight)
+      if (toY > 0 || this.content.height < this.visibleAreaHeight) {
+        toY = 0;
+      } else if (toY + this.content.height < this.visibleAreaHeight) {
         toY = -this.content.height + this.visibleAreaHeight;
-
-      if (this.content.height < this.visibleAreaHeight) toY = 0;
+      }
     }
 
     if (this.scrollDirection === 'horizontal' || this.scrollDirection === 'both') {
-      if (this.content.x > 0) toX = 0;
-
-      if (this.content.x + this.content.width < this.visibleAreaWidth)
+      if (toX > 0 || this.content.width < this.visibleAreaWidth) {
+        toX = 0;
+      } else if (toX + this.content.width < this.visibleAreaWidth) {
         toX = -this.content.width + this.visibleAreaWidth;
-
-      if (this.content.width < this.visibleAreaWidth) toX = 0;
+      }
     }
 
-    this.scrollTo(toX, toY);
+    this.scrollTo(toX, toY, false);
     this.dragging = false;
+  }
+
+  onDragCanceled() {
+    this.dragging = false;
+    this.scrollTo(this.content.x - this.deltaX, this.content.y - this.deltaY, true);
   }
 }

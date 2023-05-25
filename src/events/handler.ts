@@ -24,6 +24,12 @@ function propagate(event: ZickZackEvent, container: Container): void {
 }
 
 export function handlePointerEvent(event: ZickZackEvent, previous: ZickZackEvent | null, stage: Container): void {
+  if (event.type === 'pointerupoutside') {
+    for (let i = 0; i < previous.interactedObjects.length; i++)
+      previous.interactedObjects[i].events.emit('pointerupoutside', event);
+    return;
+  }
+
   try {
     propagate(event, stage);
   } catch (error) {
