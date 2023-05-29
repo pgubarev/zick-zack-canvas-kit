@@ -18,14 +18,14 @@ export class ScrollContainer extends Container {
   private tmpCanvas: HTMLCanvasElement;
   private tmpCtx: CanvasRenderingContext2D;
 
-  private lastX: number | null;
-  private lastY: number | null;
+  protected lastX: number | null;
+  protected lastY: number | null;
 
-  private deltaX: number;
-  private deltaY: number;
+  protected deltaX: number;
+  protected deltaY: number;
 
-  private dragging: boolean;
-  private scrolling: boolean;
+  protected dragging: boolean;
+  protected scrolling: boolean;
 
   constructor(content: DisplayObject, config: TScrollSettings) {
     super();
@@ -100,6 +100,7 @@ export class ScrollContainer extends Container {
   }
 
   private onDragStart(event: ZickZackEvent) {
+    console.log('onDragStart')
     this.preventScrolling();
 
     this.lastX = event.pointerX;
@@ -111,6 +112,7 @@ export class ScrollContainer extends Container {
   }
 
   onDragMove(event: ZickZackEvent) {
+    console.log('onDragMove')
     if (!this.dragging) return;
 
     let toX = this.content.x;
@@ -133,6 +135,7 @@ export class ScrollContainer extends Container {
   }
 
   onDragEnd() {
+    console.log('onDragEnd')
     let toX = this.content.x + this.deltaX;
     let toY = this.content.y + this.deltaY;
 
@@ -152,11 +155,12 @@ export class ScrollContainer extends Container {
       }
     }
 
-    this.scrollTo(toX, toY, false);
     this.dragging = false;
+    this.scrollTo(toX, toY, false);
   }
 
   onDragCanceled() {
+    console.log('onDragCanceled')
     this.dragging = false;
     this.scrollTo(this.content.x - this.deltaX, this.content.y - this.deltaY, true);
   }

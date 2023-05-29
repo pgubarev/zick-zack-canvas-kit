@@ -82,19 +82,29 @@ export class Layer {
     if (this.eventsEnabled) return;
     this.eventsEnabled = true;
 
-    this.canvas.addEventListener('pointerdown', this.handlePointerDown);
-    this.canvas.addEventListener('pointerup', this.handlePointerUp);
-    this.canvas.addEventListener('pointermove', this.handlePointerMove);
-    this.canvas.addEventListener('pointerleave', this.handlePointerLeave);
+    this.canvas.addEventListener('mouseup', this.handlePointerUp);
+    this.canvas.addEventListener('mousedown', this.handlePointerDown);
+    this.canvas.addEventListener('mousemove', this.handlePointerMove);
+    this.canvas.addEventListener('mouseout', this.handlePointerLeave);
+
+    this.canvas.addEventListener('touchstart', this.handlePointerUp);
+    this.canvas.addEventListener('touchend', this.handlePointerDown);
+    this.canvas.addEventListener('touchmove', this.handlePointerMove);
+    this.canvas.addEventListener('touchcancel', this.handlePointerLeave);
   }
 
   disableCanvasEvents() {
     if (!this.eventsEnabled) return;
     this.eventsEnabled = false;
 
-    this.canvas.removeEventListener('pointerdown', this.handlePointerDown);
-    this.canvas.removeEventListener('pointerup', this.handlePointerUp);
-    this.canvas.removeEventListener('pointermove', this.handlePointerMove);
-    this.canvas.removeEventListener('pointerleave', this.handlePointerLeave);
+    this.canvas.removeEventListener('mouseup', this.handlePointerUp);
+    this.canvas.removeEventListener('mousedown', this.handlePointerDown);
+    this.canvas.removeEventListener('mousemove', this.handlePointerMove);
+    this.canvas.removeEventListener('mouseout', this.handlePointerLeave);
+
+    this.canvas.removeEventListener('touchstart', this.handlePointerUp);
+    this.canvas.removeEventListener('touchend', this.handlePointerDown);
+    this.canvas.removeEventListener('touchmove', this.handlePointerMove);
+    this.canvas.removeEventListener('touchcancel', this.handlePointerLeave);
   }
 }
