@@ -12,3 +12,5 @@ export function createLayer(options: TConfigOptions, name = 'default') {
 
   return layer;
 }
+
+export * from './Layer';
