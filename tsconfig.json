@@ -9,12 +9,22 @@
     "target": "es2019",
     "esModuleInterop": true,
     "isolatedModules": true,
-    "baseUrl": "src",
+    "baseUrl": "./src",
   },
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs",
     }
+  },
+  "paths": {
+    "common/*": ["./src/common/*"],
+    "display/*": ["./src/display/*"],
+    "events/*": ["./src/events/*"],
+    "graphics/*": ["./src/graphics/*"],
+    "layers/*": ["./src/layers/*"],
+    "layout/*": ["./src/layout/*"],
+    "resources/*": ["./src/resources/*"],
+    "utils/*": ["./src/utils/*"]
   },
   "include": [
     "esbuild-config",
