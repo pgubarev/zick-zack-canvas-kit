@@ -12,11 +12,11 @@ export class ScrollContainer extends Container {
   public content: DisplayObject;
   public scrollDirection: 'horizontal' | 'vertical' | 'both' | 'disabled';
 
-  private readonly visibleAreaWidth: number;
-  private readonly visibleAreaHeight: number;
+  protected readonly visibleAreaWidth: number;
+  protected readonly visibleAreaHeight: number;
 
-  private tmpCanvas: HTMLCanvasElement;
-  private tmpCtx: CanvasRenderingContext2D;
+  protected tmpCanvas: HTMLCanvasElement;
+  protected tmpCtx: CanvasRenderingContext2D;
 
   protected lastX: number | null;
   protected lastY: number | null;
@@ -99,8 +99,31 @@ export class ScrollContainer extends Container {
     this.content.y = y;
   }
 
+  protected getYInAvailableArea(y: number): number {
+    if (y > 0 || this.content.height < this.visibleAreaHeight) {
+      return 0;
+    }
+
+    if (y + this.content.height < this.visibleAreaHeight) {
+      return -this.content.height + this.visibleAreaHeight;
+    }
+
+    return y;
+  }
+
+  protected getXInAvailableArea(x: number): number {
+    if (x > 0 || this.content.width < this.visibleAreaWidth) {
+      return 0;
+    }
+
+    if (x + this.content.width < this.visibleAreaWidth) {
+      return -this.content.width + this.visibleAreaWidth;
+    }
+
+    return x;
+  }
+
   private onDragStart(event: ZickZackEvent) {
-    console.log('onDragStart')
     this.preventScrolling();
 
     this.lastX = event.pointerX;
@@ -112,7 +135,6 @@ export class ScrollContainer extends Container {
   }
 
   onDragMove(event: ZickZackEvent) {
-    console.log('onDragMove')
     if (!this.dragging) return;
 
     let toX = this.content.x;
@@ -135,24 +157,15 @@ export class ScrollContainer extends Container {
   }
 
   onDragEnd() {
-    console.log('onDragEnd')
     let toX = this.content.x + this.deltaX;
     let toY = this.content.y + this.deltaY;
 
     if (this.scrollDirection === 'vertical' || this.scrollDirection === 'both') {
-      if (toY > 0 || this.content.height < this.visibleAreaHeight) {
-        toY = 0;
-      } else if (toY + this.content.height < this.visibleAreaHeight) {
-        toY = -this.content.height + this.visibleAreaHeight;
-      }
+      toY = this.getYInAvailableArea(toY);
     }
 
     if (this.scrollDirection === 'horizontal' || this.scrollDirection === 'both') {
-      if (toX > 0 || this.content.width < this.visibleAreaWidth) {
-        toX = 0;
-      } else if (toX + this.content.width < this.visibleAreaWidth) {
-        toX = -this.content.width + this.visibleAreaWidth;
-      }
+      toX = this.getXInAvailableArea(toX);
     }
 
     this.dragging = false;
@@ -160,8 +173,19 @@ export class ScrollContainer extends Container {
   }
 
   onDragCanceled() {
-    console.log('onDragCanceled')
     this.dragging = false;
-    this.scrollTo(this.content.x - this.deltaX, this.content.y - this.deltaY, true);
+
+    let toX = this.content.x + this.deltaX;
+    let toY = this.content.y + this.deltaY;
+
+    if (this.scrollDirection === 'vertical' || this.scrollDirection === 'both') {
+      toY = this.getYInAvailableArea(toY);
+    }
+
+    if (this.scrollDirection === 'horizontal' || this.scrollDirection === 'both') {
+      toX = this.getXInAvailableArea(toX);
+    }
+
+    this.scrollTo(toX, toY, true);
   }
 }

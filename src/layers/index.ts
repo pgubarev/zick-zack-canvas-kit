@@ -13,4 +13,6 @@ export function createLayer(options: TConfigOptions, name = 'default') {
   return layer;
 }
 
+export * from './configs';
 export * from './Layer';
+export * from './utils';
