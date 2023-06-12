@@ -1,5 +1,3 @@
-export * from './HorizontalLayout';
-export * from './VerticalLayout';
-export * from './HorizontalCentredLayout';
-export * from './VerticalCentredLayout';
+export * from './BaseLayout';
 export * from './ScrollContainer';
+export * from './flex';
