@@ -83,6 +83,11 @@ export class FlexLayout extends BaseLayout {
           break;
       }
     }
+
+    const contentSize = elementsTotalSize + (this.children.length - 1) * this._gap;
+
+    this._width = this.direction === 'row' || this.direction === 'row-reverse' ? contentSize  : crossAxisMaxElementSize;
+    this._height = this.direction === 'row' || this.direction === 'row-reverse' ? crossAxisMaxElementSize : contentSize;
   }
 
   get width(): number {
