@@ -9,18 +9,12 @@ export class FlexLayout extends BaseLayout {
   public justifyContent: TFlexJustifyContent;
   public alignItems: TFlexAlignItems;
 
-  public horizontalSize: number;
-  public verticalSize: number;
-
   constructor() {
     super();
 
     this.direction = 'row';
     this.justifyContent = 'flex-start';
     this.alignItems = 'flex-start';
-
-    this.horizontalSize = 0;
-    this.verticalSize = 0;
   }
 
   update() {
@@ -30,9 +24,9 @@ export class FlexLayout extends BaseLayout {
     const crosAxisSizeAttribute = this.direction === 'row' || this.direction === 'row-reverse' ? 'height' : 'width';
     const crossAxisMaxElementSize = this.children.reduce((accumulator, item) => Math.max(accumulator, item[crosAxisSizeAttribute]), 0);
 
-    const containerMainAxisTotalSize = this.direction === 'row' || this.direction === 'row-reverse' ? this.horizontalSize : this.verticalSize;
+    const containerMainAxisTotalSize = this.direction === 'row' || this.direction === 'row-reverse' ? this._width : this._height;
     const containerCrossAxisTotalSize = Math.max(
-      this.direction === 'row' || this.direction === 'row-reverse' ? this.verticalSize : this.horizontalSize,
+      this.direction === 'row' || this.direction === 'row-reverse' ? this._width : this._height,
       crossAxisMaxElementSize,
     );
 
@@ -85,22 +79,8 @@ export class FlexLayout extends BaseLayout {
     }
 
     const contentSize = elementsTotalSize + (this.children.length - 1) * this._gap;
-
-    this._width = this.direction === 'row' || this.direction === 'row-reverse' ? contentSize  : crossAxisMaxElementSize;
-    this._height = this.direction === 'row' || this.direction === 'row-reverse' ? crossAxisMaxElementSize : contentSize;
-  }
-
-  get width(): number {
-    return this.horizontalSize || this._width;
-  }
-  set width(value: number) {
-    this.horizontalSize = value;
-  }
-  get height(): number {
-    return this.verticalSize || this._height;
-  }
-  set height(value: number) {
-    this.verticalSize = value;
+    this._width ||= this.direction === 'row' || this.direction === 'row-reverse' ? contentSize  : crossAxisMaxElementSize;
+    this._height ||= this.direction === 'row' || this.direction === 'row-reverse' ? crossAxisMaxElementSize : contentSize;
   }
 
   get gap() {
