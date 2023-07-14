@@ -48,7 +48,7 @@ export class FlexLayout extends BaseLayout {
 
     const containerMainAxisTotalSize = this.direction === 'row' || this.direction === 'row-reverse' ? this._horizontalSize : this._verticalSize;
     const containerCrossAxisTotalSize = Math.max(
-      this.direction === 'row' || this.direction === 'row-reverse' ? this._horizontalSize : this._verticalSize,
+      this.direction === 'row' || this.direction === 'row-reverse' ? this._verticalSize : this._horizontalSize,
       crossAxisMaxElementSize,
     );
 
