@@ -120,7 +120,7 @@ export class Container extends DisplayObject implements IContainer {
     this._updateChildrenPositions();
   }
 
-  private recalculateSize() {
+  protected recalculateSize() {
     if (this.children.length === 0) {
       this._width = 0;
       this._height = 0;
