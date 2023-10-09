@@ -8,4 +8,5 @@ export type TextStyle = {
 
 export type MultilineTextStyle = {
   textAlign: 'left' | 'center' | 'right';
+  lineHeight?: number;
 } & TextStyle;

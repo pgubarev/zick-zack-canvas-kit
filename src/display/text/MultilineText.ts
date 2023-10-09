@@ -102,7 +102,8 @@ export class MultilineText extends DisplayObject {
 
     this._width = largestLine.width;
 
-    this._lineHeight = largestLine.actualBoundingBoxAscent + largestLine.actualBoundingBoxDescent;
+    this._lineHeight =
+        largestLine.actualBoundingBoxAscent + largestLine.actualBoundingBoxDescent + (this.style.lineHeight ?? 0);
     this._height = this._text.length * this._lineHeight;
   }
 }
